@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liruilong.hros.mapper.OpLogMapper">
+    <resultMap id="BaseResultMap" type="com.liruilong.hros.model.OpLog">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="logtype" property="logtype" jdbcType="TINYINT"/>
+        <result column="addDate" property="adddate" jdbcType="TIMESTAMP"/>
+        <result column="operate" property="operate" jdbcType="VARCHAR"/>
+        <result column="hrname" property="hrname" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="BaseResultMap1" type="com.liruilong.hros.model.OpLog">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="logtype" property="logtype" jdbcType="TINYINT"/>
+        <result column="addDate" property="adddate" jdbcType="TIMESTAMP"/>
+        <result column="operate" property="operate" jdbcType="VARCHAR"/>
+        <result column="hrname" property="hrname" jdbcType="VARCHAR"/>
+        <association property="logTypss" javaType="com.liruilong.hros.model.LogType">
+            <id column="lid" property="id" jdbcType="INTEGER"/>
+            <result column="llogtypemsg" property="logtypemsg" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, logtype, addDate, operate, hrname
+  </sql>
+    <select id="selectByPrimaryKey" resultType="java.lang.Long">
+    select  count(*)
+    from oplog o
+    <where>
+        <if test="logtype !=null">
+           and  o.logtype = #{logtype}
+        </if>
+        <if test="beginDateScope !=null">
+            and o.addDate between #{beginDateScope[0]} and #{beginDateScope[1]}
+        </if>
+    </where>
+    </select>
+    <select id="getAllsOplog" resultMap="BaseResultMap1">
+        select o.id, o.logtype, o.addDate, o.operate, o.hrname , l.id as lid, l.logtypemsg as llogtypemsg
+        FROM oplog o, logtype l
+        WHERE o.logtype=l.id
+        <if test="logtype !=null">
+            and o.logtype = #{logtype}
+        </if>
+        <if test="beginDateScope !=null">
+            and o.addDate between #{beginDateScope[0]} and #{beginDateScope[1]}
+        </if>
+        order by o.id desc limit #{page},#{size}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from oplog
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.liruilong.hros.model.OpLog">
+    insert into oplog (id, logtype, addDate, 
+      operate, hrname)
+    values (#{id,jdbcType=INTEGER}, #{logtype,jdbcType=TINYINT}, #{adddate,jdbcType=TIMESTAMP}, 
+      #{operate,jdbcType=VARCHAR}, #{hrname,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.liruilong.hros.model.OpLog">
+        insert into oplog
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="logtype != null">
+                logtype,
+            </if>
+            <if test="adddate != null">
+                addDate,
+            </if>
+            <if test="operate != null">
+                operate,
+            </if>
+            <if test="hrname != null">
+                hrname,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="logtype != null">
+                #{logtype,jdbcType=TINYINT},
+            </if>
+            <if test="adddate != null">
+                #{adddate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operate != null">
+                #{operate,jdbcType=VARCHAR},
+            </if>
+            <if test="hrname != null">
+                #{hrname,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.liruilong.hros.model.OpLog">
+        update oplog
+        <set>
+            <if test="logtype != null">
+                logtype = #{logtype,jdbcType=TINYINT},
+            </if>
+            <if test="adddate != null">
+                addDate = #{adddate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operate != null">
+                operate = #{operate,jdbcType=VARCHAR},
+            </if>
+            <if test="hrname != null">
+                hrname = #{hrname,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.liruilong.hros.model.OpLog">
+    update oplog
+    set logtype = #{logtype,jdbcType=TINYINT},
+      addDate = #{adddate,jdbcType=TIMESTAMP},
+      operate = #{operate,jdbcType=VARCHAR},
+      hrname = #{hrname,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

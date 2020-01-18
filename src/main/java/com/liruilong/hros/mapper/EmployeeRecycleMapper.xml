@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liruilong.hros.mapper.EmployeeRecycleMapper" >
+  <resultMap id="BaseResultMap" type="com.liruilong.hros.model.EmployeeRecycle" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="CHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="idCard" property="idcard" jdbcType="CHAR" />
+    <result column="wedlock" property="wedlock" jdbcType="CHAR" />
+    <result column="nationId" property="nationid" jdbcType="INTEGER" />
+    <result column="nativePlace" property="nativeplace" jdbcType="VARCHAR" />
+    <result column="politicId" property="politicid" jdbcType="INTEGER" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="departmentId" property="departmentid" jdbcType="INTEGER" />
+    <result column="jobLevelId" property="joblevelid" jdbcType="INTEGER" />
+    <result column="posId" property="posid" jdbcType="INTEGER" />
+    <result column="engageForm" property="engageform" jdbcType="VARCHAR" />
+    <result column="tiptopDegree" property="tiptopdegree" jdbcType="CHAR" />
+    <result column="specialty" property="specialty" jdbcType="VARCHAR" />
+    <result column="school" property="school" jdbcType="VARCHAR" />
+    <result column="beginDate" property="begindate" jdbcType="DATE" />
+    <result column="workState" property="workstate" jdbcType="CHAR" />
+    <result column="workID" property="workid" jdbcType="CHAR" />
+    <result column="contractTerm" property="contractterm" jdbcType="DOUBLE" />
+    <result column="conversionTime" property="conversiontime" jdbcType="DATE" />
+    <result column="notWorkDate" property="notworkdate" jdbcType="DATE" />
+    <result column="beginContract" property="begincontract" jdbcType="DATE" />
+    <result column="endContract" property="endcontract" jdbcType="DATE" />
+    <result column="workAge" property="workage" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, gender, birthday, idCard, wedlock, nationId, nativePlace, politicId, email, 
+    phone, address, departmentId, jobLevelId, posId, engageForm, tiptopDegree, specialty, 
+    school, beginDate, workState, workID, contractTerm, conversionTime, notWorkDate, 
+    beginContract, endContract, workAge
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from employee_recycle
+
+  </select>
+  <select id="dataViewDepartment" resultType="com.liruilong.hros.model.datas.DataModel">
+      select d.`name` as name,COUNT(*) as sum
+        from employee_recycle e,department d
+        where  e.`departmentId`=d.`id` GROUP BY name
+  </select>
+  <select id="dataViewPosition" resultType="com.liruilong.hros.model.datas.DataModels">
+     select pos.`name` as name, COUNT(*) as sum , AVG(e.workage) as workage
+        from employee_recycle e,position pos
+        where  e.`posId`=pos.`id` GROUP BY name,workage
+  </select>
+  <select id="dataViewJobLevelT" resultType="com.liruilong.hros.model.datas.DataModels">
+     select j.`name` as name , COUNT(*) as sum ,round(AVG(TIMESTAMPDIFF(YEAR, e.birthday, CURDATE()) ) ) as  workage
+        from employee_recycle e,joblevel j
+        where  e.`jobLevelId`=j.`id` GROUP BY name
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from employee_recycle
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.liruilong.hros.model.EmployeeRecycle" >
+    insert into employee_recycle (id, name, gender, 
+      birthday, idCard, wedlock, nationId, 
+      nativePlace, politicId, email, 
+      phone, address, departmentId, 
+      jobLevelId, posId, engageForm, 
+      tiptopDegree, specialty, school, 
+      beginDate, workState, workID, 
+      contractTerm, conversionTime, notWorkDate, 
+      beginContract, endContract, workAge
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{gender,jdbcType=CHAR}, 
+      #{birthday,jdbcType=DATE}, #{idcard,jdbcType=CHAR}, #{wedlock,jdbcType=CHAR}, #{nationid,jdbcType=INTEGER}, 
+      #{nativeplace,jdbcType=VARCHAR}, #{politicid,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{departmentid,jdbcType=INTEGER}, 
+      #{joblevelid,jdbcType=INTEGER}, #{posid,jdbcType=INTEGER}, #{engageform,jdbcType=VARCHAR}, 
+      #{tiptopdegree,jdbcType=CHAR}, #{specialty,jdbcType=VARCHAR}, #{school,jdbcType=VARCHAR}, 
+      #{begindate,jdbcType=DATE}, #{workstate,jdbcType=CHAR}, #{workid,jdbcType=CHAR}, 
+      #{contractterm,jdbcType=DOUBLE}, #{conversiontime,jdbcType=DATE}, #{notworkdate,jdbcType=DATE}, 
+      #{begincontract,jdbcType=DATE}, #{endcontract,jdbcType=DATE}, #{workage,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.liruilong.hros.model.Employee" >
+    insert into employee_recycle
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="idcard != null" >
+        idCard,
+      </if>
+      <if test="wedlock != null" >
+        wedlock,
+      </if>
+      <if test="nationid != null" >
+        nationId,
+      </if>
+      <if test="nativeplace != null" >
+        nativePlace,
+      </if>
+      <if test="politicid != null" >
+        politicId,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="departmentid != null" >
+        departmentId,
+      </if>
+      <if test="joblevelid != null" >
+        jobLevelId,
+      </if>
+      <if test="posid != null" >
+        posId,
+      </if>
+      <if test="engageform != null" >
+        engageForm,
+      </if>
+      <if test="tiptopdegree != null" >
+        tiptopDegree,
+      </if>
+      <if test="specialty != null" >
+        specialty,
+      </if>
+      <if test="school != null" >
+        school,
+      </if>
+      <if test="begindate != null" >
+        beginDate,
+      </if>
+      <if test="workstate != null" >
+        workState,
+      </if>
+      <if test="workid != null" >
+        workID,
+      </if>
+      <if test="contractterm != null" >
+        contractTerm,
+      </if>
+      <if test="conversiontime != null" >
+        conversionTime,
+      </if>
+      <if test="notworkdate != null" >
+        notWorkDate,
+      </if>
+      <if test="begincontract != null" >
+        beginContract,
+      </if>
+      <if test="endcontract != null" >
+        endContract,
+      </if>
+      <if test="workage != null" >
+        workAge,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=CHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="idcard != null" >
+        #{idcard,jdbcType=CHAR},
+      </if>
+      <if test="wedlock != null" >
+        #{wedlock,jdbcType=CHAR},
+      </if>
+      <if test="nationid != null" >
+        #{nationid,jdbcType=INTEGER},
+      </if>
+      <if test="nativeplace != null" >
+        #{nativeplace,jdbcType=VARCHAR},
+      </if>
+      <if test="politicid != null" >
+        #{politicid,jdbcType=INTEGER},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentid != null" >
+        #{departmentid,jdbcType=INTEGER},
+      </if>
+      <if test="joblevelid != null" >
+        #{joblevelid,jdbcType=INTEGER},
+      </if>
+      <if test="posid != null" >
+        #{posid,jdbcType=INTEGER},
+      </if>
+      <if test="engageform != null" >
+        #{engageform,jdbcType=VARCHAR},
+      </if>
+      <if test="tiptopdegree != null" >
+        #{tiptopdegree,jdbcType=CHAR},
+      </if>
+      <if test="specialty != null" >
+        #{specialty,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null" >
+        #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="begindate != null" >
+        #{begindate,jdbcType=DATE},
+      </if>
+      <if test="workstate != null" >
+        #{workstate,jdbcType=CHAR},
+      </if>
+      <if test="workid != null" >
+        #{workid,jdbcType=CHAR},
+      </if>
+      <if test="contractterm != null" >
+        #{contractterm,jdbcType=DOUBLE},
+      </if>
+      <if test="conversiontime != null" >
+        #{conversiontime,jdbcType=DATE},
+      </if>
+      <if test="notworkdate != null" >
+        #{notworkdate,jdbcType=DATE},
+      </if>
+      <if test="begincontract != null" >
+        #{begincontract,jdbcType=DATE},
+      </if>
+      <if test="endcontract != null" >
+        #{endcontract,jdbcType=DATE},
+      </if>
+      <if test="workage != null" >
+        #{workage,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.liruilong.hros.model.EmployeeRecycle" >
+    update employee_recycle
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=CHAR},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="idcard != null" >
+        idCard = #{idcard,jdbcType=CHAR},
+      </if>
+      <if test="wedlock != null" >
+        wedlock = #{wedlock,jdbcType=CHAR},
+      </if>
+      <if test="nationid != null" >
+        nationId = #{nationid,jdbcType=INTEGER},
+      </if>
+      <if test="nativeplace != null" >
+        nativePlace = #{nativeplace,jdbcType=VARCHAR},
+      </if>
+      <if test="politicid != null" >
+        politicId = #{politicid,jdbcType=INTEGER},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentid != null" >
+        departmentId = #{departmentid,jdbcType=INTEGER},
+      </if>
+      <if test="joblevelid != null" >
+        jobLevelId = #{joblevelid,jdbcType=INTEGER},
+      </if>
+      <if test="posid != null" >
+        posId = #{posid,jdbcType=INTEGER},
+      </if>
+      <if test="engageform != null" >
+        engageForm = #{engageform,jdbcType=VARCHAR},
+      </if>
+      <if test="tiptopdegree != null" >
+        tiptopDegree = #{tiptopdegree,jdbcType=CHAR},
+      </if>
+      <if test="specialty != null" >
+        specialty = #{specialty,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null" >
+        school = #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="begindate != null" >
+        beginDate = #{begindate,jdbcType=DATE},
+      </if>
+      <if test="workstate != null" >
+        workState = #{workstate,jdbcType=CHAR},
+      </if>
+      <if test="workid != null" >
+        workID = #{workid,jdbcType=CHAR},
+      </if>
+      <if test="contractterm != null" >
+        contractTerm = #{contractterm,jdbcType=DOUBLE},
+      </if>
+      <if test="conversiontime != null" >
+        conversionTime = #{conversiontime,jdbcType=DATE},
+      </if>
+      <if test="notworkdate != null" >
+        notWorkDate = #{notworkdate,jdbcType=DATE},
+      </if>
+      <if test="begincontract != null" >
+        beginContract = #{begincontract,jdbcType=DATE},
+      </if>
+      <if test="endcontract != null" >
+        endContract = #{endcontract,jdbcType=DATE},
+      </if>
+      <if test="workage != null" >
+        workAge = #{workage,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.liruilong.hros.model.EmployeeRecycle" >
+    update employee_recycle
+    set name = #{name,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=CHAR},
+      birthday = #{birthday,jdbcType=DATE},
+      idCard = #{idcard,jdbcType=CHAR},
+      wedlock = #{wedlock,jdbcType=CHAR},
+      nationId = #{nationid,jdbcType=INTEGER},
+      nativePlace = #{nativeplace,jdbcType=VARCHAR},
+      politicId = #{politicid,jdbcType=INTEGER},
+      email = #{email,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      departmentId = #{departmentid,jdbcType=INTEGER},
+      jobLevelId = #{joblevelid,jdbcType=INTEGER},
+      posId = #{posid,jdbcType=INTEGER},
+      engageForm = #{engageform,jdbcType=VARCHAR},
+      tiptopDegree = #{tiptopdegree,jdbcType=CHAR},
+      specialty = #{specialty,jdbcType=VARCHAR},
+      school = #{school,jdbcType=VARCHAR},
+      beginDate = #{begindate,jdbcType=DATE},
+      workState = #{workstate,jdbcType=CHAR},
+      workID = #{workid,jdbcType=CHAR},
+      contractTerm = #{contractterm,jdbcType=DOUBLE},
+      conversionTime = #{conversiontime,jdbcType=DATE},
+      notWorkDate = #{notworkdate,jdbcType=DATE},
+      beginContract = #{begincontract,jdbcType=DATE},
+      endContract = #{endcontract,jdbcType=DATE},
+      workAge = #{workage,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liruilong.hros.mapper.EmployeetrainMapper" >
+  <resultMap id="BaseResultMap" type="com.liruilong.hros.model.Employeetrain" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="eid" property="eid" jdbcType="INTEGER" />
+    <result column="trainstartDate" property="trainstartdate" jdbcType="DATE" />
+    <result column="trainfinishDate" property="trainfinishdate" jdbcType="TIMESTAMP" />
+    <result column="trainContent" property="traincontent" jdbcType="VARCHAR" />
+    <result column="trainstatus" property="trainstatus" jdbcType="TINYINT" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, eid, trainstartDate, trainfinishDate, trainContent, trainstatus, remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from employeetrain
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from employeetrain
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByEmployeetrain">
+     delete from employeetrain
+    where id = #{id,jdbcType=INTEGER}
+        and eid = #{eid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.liruilong.hros.model.Employeetrain" >
+    insert into employeetrain (id, eid, trainstartDate, 
+      trainfinishDate, trainContent, trainstatus, 
+      remark)
+    values (#{id,jdbcType=INTEGER}, #{eid,jdbcType=INTEGER}, #{trainstartdate,jdbcType=DATE}, 
+      #{trainfinishdate,jdbcType=TIMESTAMP}, #{traincontent,jdbcType=VARCHAR}, #{trainstatus,jdbcType=TINYINT}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.liruilong.hros.model.Employeetrain" >
+    insert into employeetrain
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="eid != null" >
+        eid,
+      </if>
+      <if test="trainstartdate != null" >
+        trainstartDate,
+      </if>
+      <if test="trainfinishdate != null" >
+        trainfinishDate,
+      </if>
+      <if test="traincontent != null" >
+        trainContent,
+      </if>
+      <if test="trainstatus != null" >
+        trainstatus,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="eid != null" >
+        #{eid,jdbcType=INTEGER},
+      </if>
+      <if test="trainstartdate != null" >
+        #{trainstartdate,jdbcType=DATE},
+      </if>
+      <if test="trainfinishdate != null" >
+        #{trainfinishdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="traincontent != null" >
+        #{traincontent,jdbcType=VARCHAR},
+      </if>
+      <if test="trainstatus != null" >
+        #{trainstatus,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <insert id="addEmploteetByPge">
+     insert into employeetrain ( eid, trainstartDate,
+      trainfinishDate, trainContent, trainstatus,
+      remark)
+    values
+    <foreach collection="ids" item="eid" separator=",">
+    ( #{eid,jdbcType=INTEGER}, #{emp.trainstartdate,jdbcType=DATE},
+      #{emp.trainfinishdate,jdbcType=TIMESTAMP}, #{emp.traincontent,jdbcType=VARCHAR}, #{emp.trainstatus,jdbcType=TINYINT},
+      #{emp.remark,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.liruilong.hros.model.Employeetrain" >
+    update employeetrain
+    <set >
+      <if test="eid != null" >
+        eid = #{eid,jdbcType=INTEGER},
+      </if>
+      <if test="trainstartdate != null" >
+        trainstartDate = #{trainstartdate,jdbcType=DATE},
+      </if>
+      <if test="trainfinishdate != null" >
+        trainfinishDate = #{trainfinishdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="traincontent != null" >
+        trainContent = #{traincontent,jdbcType=VARCHAR},
+      </if>
+      <if test="trainstatus != null" >
+        trainstatus = #{trainstatus,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.liruilong.hros.model.Employeetrain" >
+    update employeetrain
+    set eid = #{eid,jdbcType=INTEGER},
+      trainstartDate = #{trainstartdate,jdbcType=DATE},
+      trainfinishDate = #{trainfinishdate,jdbcType=TIMESTAMP},
+      trainContent = #{traincontent,jdbcType=VARCHAR},
+      trainstatus = #{trainstatus,jdbcType=TINYINT},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

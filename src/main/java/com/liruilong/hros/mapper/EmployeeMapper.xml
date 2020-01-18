@@ -1,0 +1,1053 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liruilong.hros.mapper.EmployeeMapper">
+    <resultMap id="BaseResultMap" type="com.liruilong.hros.model.Employee">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="gender" property="gender" jdbcType="CHAR"/>
+        <result column="birthday" property="birthday" jdbcType="DATE"/>
+        <result column="idCard" property="idcard" jdbcType="CHAR"/>
+        <result column="wedlock" property="wedlock" jdbcType="CHAR"/>
+        <result column="nationId" property="nationid" jdbcType="INTEGER"/>
+        <result column="nativePlace" property="nativeplace" jdbcType="VARCHAR"/>
+        <result column="politicId" property="politicid" jdbcType="INTEGER"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="departmentId" property="departmentid" jdbcType="INTEGER"/>
+        <result column="jobLevelId" property="joblevelid" jdbcType="INTEGER"/>
+        <result column="posId" property="posid" jdbcType="INTEGER"/>
+        <result column="engageForm" property="engageform" jdbcType="VARCHAR"/>
+        <result column="tiptopDegree" property="tiptopdegree" jdbcType="CHAR"/>
+        <result column="specialty" property="specialty" jdbcType="VARCHAR"/>
+        <result column="school" property="school" jdbcType="VARCHAR"/>
+        <result column="beginDate" property="begindate" jdbcType="DATE"/>
+        <result column="workState" property="workstate" jdbcType="CHAR"/>
+        <result column="workID" property="workid" jdbcType="CHAR"/>
+        <result column="contractTerm" property="contractterm" jdbcType="DOUBLE"/>
+        <result column="conversionTime" property="conversiontime" jdbcType="DATE"/>
+        <result column="notWorkDate" property="notworkdate" jdbcType="DATE"/>
+        <result column="beginContract" property="begincontract" jdbcType="DATE"/>
+        <result column="endContract" property="endcontract" jdbcType="DATE"/>
+        <result column="workAge" property="workage" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="AllEmployeeInfo" type="com.liruilong.hros.model.Employee" extends="BaseResultMap">
+        <association property="nation" javaType="com.liruilong.hros.model.Nation">
+            <id column="nid" property="id"/>
+            <result column="nname" property="name"/>
+        </association>
+        <association property="politicsstatus" javaType="com.liruilong.hros.model.Politicsstatus">
+            <id column="pid" property="id"/>
+            <result column="pname" property="name"/>
+        </association>
+        <association property="department" javaType="com.liruilong.hros.model.Department">
+            <id column="did" property="id"/>
+            <result column="dname" property="name"/>
+        </association>
+        <association property="jobLevel" javaType="com.liruilong.hros.model.JobLevel">
+            <id column="jid" property="id"/>
+            <result column="jname" property="name"/>
+        </association>
+        <association property="position" javaType="com.liruilong.hros.model.Position">
+            <id column="posid" property="id"/>
+            <result column="posname" property="name"/>
+        </association>
+    </resultMap>
+    <resultMap id="EmployeeWithSalary" type="com.liruilong.hros.model.Employee" extends="AllEmployeeInfo">
+        <association property="salary" javaType="com.liruilong.hros.model.Salary">
+            <id column="sid" property="id" jdbcType="INTEGER"/>
+            <result column="sbasicSalary" property="basicsalary" jdbcType="INTEGER"/>
+            <result column="sbonus" property="bonus" jdbcType="INTEGER"/>
+            <result column="slunchSalary" property="lunchsalary" jdbcType="INTEGER"/>
+            <result column="strafficSalary" property="trafficsalary" jdbcType="INTEGER"/>
+            <result column="sallSalary" property="allsalary" jdbcType="INTEGER"/>
+            <result column="spensionBase" property="pensionbase" jdbcType="INTEGER"/>
+            <result column="spensionPer" property="pensionper" jdbcType="REAL"/>
+            <result column="screateDate" property="createdate" jdbcType="TIMESTAMP"/>
+            <result column="smedicalBase" property="medicalbase" jdbcType="INTEGER"/>
+            <result column="smedicalPer" property="medicalper" jdbcType="REAL"/>
+            <result column="saccumulationFundBase" property="accumulationfundbase" jdbcType="INTEGER"/>
+            <result column="saccumulationFundPer" property="accumulationfundper" jdbcType="REAL"/>
+            <result column="sname" property="name" jdbcType="VARCHAR"/>
+        </association>
+
+    </resultMap>
+    <resultMap id="BaseResultMapecc" type="com.liruilong.hros.model.Employee" extends="AllEmployeeInfo">
+        <collection property="employeeecList" ofType="com.liruilong.hros.model.Employeeec">
+            <result property="ecreason" column="ecReason"/>
+            <result property="ectype" column="ecType"/>
+            <result property="eid" column="ecid"/>
+            <result property="id" column="eid"/>
+            <result property="ecdate" column="ecdate"/>
+            <result property="remark" column="remark"/>
+            <association property="rwardsPunishments" javaType="com.liruilong.hros.model.RwardsPunishments">
+                <result property="id" column="rid"/>
+                <result property="rpmsg" column="rpmsg"/>
+                <result property="rpsystemId" column="rpsystem_id"/>
+                <result property="rpiont" column="rpiont"/>
+            </association>
+        </collection>
+    </resultMap>
+    <resultMap id="BaseResultMapect" type="com.liruilong.hros.model.Employee" extends="AllEmployeeInfo">
+        <association property="employeetrainList" javaType="com.liruilong.hros.model.Employeetrain">
+            <id column="etid" property="id" jdbcType="INTEGER"/>
+            <result column="eid" property="eid" jdbcType="INTEGER"/>
+            <result column="trainstartDate" property="trainstartdate" jdbcType="DATE"/>
+            <result column="trainfinishDate" property="trainfinishdate" jdbcType="TIMESTAMP"/>
+            <result column="trainContent" property="traincontent" jdbcType="VARCHAR"/>
+            <result column="trainstatus" property="trainstatus" jdbcType="TINYINT"/>
+            <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+    <resultMap id="BaseResultMapecA" type="com.liruilong.hros.model.Employee" extends="AllEmployeeInfo">
+        <association property="appraise" javaType="com.liruilong.hros.model.Appraise">
+            <id column="aid" property="id" jdbcType="INTEGER"/>
+            <result column="eid" property="eid" jdbcType="INTEGER"/>
+            <result column="appDate" property="appdate" jdbcType="DATE"/>
+            <result column="appResult" property="appresult" jdbcType="VARCHAR"/>
+            <result column="appContent" property="appcontent" jdbcType="VARCHAR"/>
+            <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+    <resultMap id="BaseResultMapecM" type="com.liruilong.hros.model.Employee" extends="AllEmployeeInfo">
+        <collection property="employeeremoveList" ofType="com.liruilong.hros.model.Employeeremove">
+            <result column="afterDepId" property="afterdepid" jdbcType="INTEGER"/>
+            <result column="afterJobId" property="afterjobid" jdbcType="INTEGER"/>
+            <result column="removeDate" property="removedate" jdbcType="DATE"/>
+            <result column="reason" property="reason" jdbcType="VARCHAR"/>
+            <association property="department" javaType="com.liruilong.hros.model.Department">
+                <result column="dtname" property="name"/>
+            </association>
+            <association property="jobLevel" javaType="com.liruilong.hros.model.JobLevel">
+                <result column="jlname" property="name"/>
+            </association>
+        </collection>
+    </resultMap>
+    <resultMap id="DataViewbean" type="com.liruilong.hros.model.datas.DataModel">
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="sum" property="sum" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, name, gender, birthday, idCard, wedlock, nationId, nativePlace, politicId, email, 
+    phone, address, departmentId, jobLevelId, posId, engageForm, tiptopDegree, specialty, 
+    school, beginDate, workState, workID, contractTerm, conversionTime, notWorkDate, 
+    beginContract, endContract, workAge
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="AllEmployeeInfo">
+         select e.*,p.`id` as pid,p.`name` as pname,n.`id` as nid,n.`name` as nname,d.`id` as did,d.`name` as
+        dname,j.`id` as jid,j.`name` as jname,pos.`id` as posid,pos.`name` as posname
+        from employee e,nation n,politicsstatus p,department d,joblevel j,position pos
+        where e.`nationId`=n.`id` and e.`politicId`=p.`id` and
+        e.`departmentId`=d.`id` and e.`jobLevelId`=j.`id` and e.`posId`=pos.`id`
+    </select>
+    <select id="getTotal" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM employee e
+        <where>
+            <if test="emp!=null">
+                <if test="emp.name !=null and emp.name!=''">
+                    and e.name like concat('%',#{emp.name},'%')
+                </if>
+                <if test="emp.politicid !=null">
+                    and e.politicId =#{emp.politicid}
+                </if>
+                <if test="emp.nationId !=null">
+                    and e.nationId =#{emp.nationid}
+                </if>
+                <if test="emp.joblevelid !=null">
+                    and e.jobLevelId =#{emp.joblevelid}
+                </if>
+                <if test="emp.departmentid !=null">
+                    and e.departmentId =#{emp.departmentid}
+                </if>
+                <if test="emp.engageform !=null and emp.engageform!=''">
+                    and e.engageForm =#{emp.engageform}
+                </if>
+                <if test="emp.posId !=null">
+                    and e.posId =#{emp.posid}
+                </if>
+            </if>
+            <if test="beginDateScope !=null">
+                and e.beginDate between #{beginDateScope[0]} and #{beginDateScope[1]}
+            </if>
+        </where>
+    </select>
+    <select id="getEmployeeByPage" resultMap="AllEmployeeInfo">
+        select e.*,p.`id` as pid,p.`name` as pname,n.`id` as nid,n.`name` as nname,d.`id` as did,d.`name` as
+        dname,j.`id` as jid,j.`name` as jname,pos.`id` as posid,pos.`name` as posname
+        from employee e,nation n,politicsstatus p,department d,joblevel j,position pos
+        where e.`nationId`=n.`id` and e.`politicId`=p.`id` and
+        e.`departmentId`=d.`id` and e.`jobLevelId`=j.`id` and e.`posId`=pos.`id`
+        <if test="emp != null">
+            <if test="emp.name !=null and emp.name!=''">
+                and e.name like concat('%',#{emp.name},'%')
+            </if>
+            <if test="emp.politicid !=null">
+                and e.politicId =#{emp.politicid}
+            </if>
+            <if test="emp.nationid !=null">
+                and e.nationId =#{emp.nationid}
+            </if>
+            <if test="emp.joblevelid !=null">
+                and e.jobLevelId =#{emp.joblevelid}
+            </if>
+            <if test="emp.departmentid !=null">
+                and e.departmentId =#{emp.departmentid}
+            </if>
+            <if test="emp.engageform !=null and emp.engageform!=''">
+                and e.engageForm =#{emp.engageform}
+            </if>
+            <if test="emp.posid !=null">
+                and e.posId =#{emp.posid}
+            </if>
+        </if>
+        <if test="beginDateScope !=null">
+            and e.beginDate between #{beginDateScope[0]} and #{beginDateScope[1]}
+        </if>
+        order by e.workID DESC
+        <if test="page !=null and size!=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+    <select id="getEmployeecByPage" resultMap="BaseResultMapecc">
+        SELECT
+        e.*,
+        ec.id AS eid,
+        ec.ecReason AS ecReason,
+        ec.ecType AS ecType,
+        ec.remark as remark,
+        rp.id AS rid,
+        ec.eid AS ecid,
+        ec.ecDate as ecdate,
+        rp.rpmsg AS rpmsg,
+        rp.rpiont AS rpiont,
+        rp.rpsystem_id AS rpsystem_id
+        FROM
+        employee e
+
+        LEFT JOIN employeeec ec ON e.id = ec.eid
+        INNER JOIN rwards_punishments rp ON ec.ecType = rp.id
+        <where>
+            <if test="emp!=null">
+                <if test="emp.name !=null and emp.name!=''">
+                    and e.name like concat('%',#{emp.name},'%')
+                </if>
+            </if>
+        </where>
+        order by ec.id desc
+        <if test="page !=null and size!=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+    <select id="maxWorkID" resultType="java.lang.Integer">
+    select max(workID) from employee
+  </select>
+    <select id="getEmployeeById" resultMap="AllEmployeeInfo">
+        select e.*,p.`id` as pid,p.`name` as pname,n.`id` as nid,n.`name` as nname,d.`id` as did,d.`name` as
+        dname,j.`id` as jid,j.`name` as jname,pos.`id` as posid,pos.`name` as posname from employee e,nation
+        n,politicsstatus p,department d,joblevel j,position pos where e.`nationId`=n.`id` and e.`politicId`=p.`id` and
+        e.`departmentId`=d.`id` and e.`jobLevelId`=j.`id` and e.`posId`=pos.`id` and e.`id`=#{id}
+    </select>
+    <select id="getEmployeeByPageWithSalary" resultMap="EmployeeWithSalary">
+        SELECT distinct e.*,d.`name` AS dname,s.`id` AS sid,s.`accumulationFundBase` AS
+        saccumulationFundBase,s.`accumulationFundPer` AS saccumulationFundPer,s.`allSalary` AS
+        sallSalary,s.`basicSalary` AS sbasicSalary,s.`bonus` AS sbonus,s.`createDate` AS screateDate,s.`lunchSalary` AS
+        slunchSalary,s.`medicalBase` AS smedicalBase,s.`medicalPer` AS smedicalPer,s.`name` AS sname,s.`pensionBase` AS
+        spensionBase,s.`pensionPer` AS spensionPer,s.`trafficSalary` AS strafficSalary ,j.`id` as jid,j.`name` as
+        jname,pos.`id` as posid,pos.`name` as posname
+        FROM employee e LEFT JOIN
+        empsalary es ON e.`id`=es.`eid` LEFT JOIN salary s ON es.`sid`=s.`id` LEFT JOIN department d ON
+        e.`departmentId`=d.`id` left join joblevel j on e.`jobLevelId`=j.`id` left join position pos on e.posId = pos.id
+        <if test="page !=null and size !=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+    <select id="dataViewPosition" resultMap="DataViewbean">
+      select pos.`name` as name, COUNT(*) as sum
+        from employee e,position pos
+        where  e.`posId`=pos.`id` GROUP BY name
+    </select>
+    <select id="dataViewJobLevel" resultType="com.liruilong.hros.model.datas.DataModel">
+        select j.`name` as name , COUNT(*) as sum
+        from employee e,joblevel j
+        where  e.`jobLevelId`=j.`id` GROUP BY name
+    </select>
+    <select id="dataViewDepartment" resultType="com.liruilong.hros.model.datas.DataModel">
+       select d.`name` as name,COUNT(*) as sum
+        from employee e,department d
+        where  e.`departmentId`=d.`id` GROUP BY name
+    </select>
+    <select id="dataViewNation" resultType="com.liruilong.hros.model.datas.DataModel">
+         select  n.`name` as name, COUNT(*) as sum
+        from employee e,nation n
+        where e.`nationId`=n.`id` GROUP BY name
+    </select>
+    <select id="DataViewPoliticsstatus" resultType="com.liruilong.hros.model.datas.DataModel">
+          select p.`name` as name,COUNT(*) as sum
+        from employee e,politicsstatus p
+        where  e.`politicId`=p.`id`GROUP BY name
+    </select>
+    <select id="dataViewJobLevelAge" resultType="com.liruilong.hros.model.datas.DataModels">
+         select j.`name` as name , COUNT(*) as sum,  round(AVG(TIMESTAMPDIFF(YEAR, e.birthday, CURDATE()) ) ) as  workage
+        from employee e,joblevel j
+        where  e.`jobLevelId`=j.`id` GROUP BY name
+    </select>
+    <select id="getTotalc" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        from employee e
+        LEFT JOIN employeeec ec ON e.id = ec.eid
+        right JOIN rwards_punishments rp ON ec.ecType = rp.id
+        <where>
+            <if test="emp!=null">
+                <if test="emp.name !=null and emp.name!=''">
+                    and e.name like concat('%',#{emp.name},'%')
+                </if>
+            </if>
+        </where>
+
+        order by ec.id desc
+    </select>
+    <select id="getEmployeetByPage" resultMap="BaseResultMapect">
+        SELECT
+        e.*,
+        eid, trainstartDate, trainfinishDate, trainContent, trainstatus, remark,et.id AS etid
+        FROM
+        employee e
+        RIGHT JOIN employeetrain et ON e.id = et.eid
+        <where>
+            <if test="emp!=null">
+                <if test="emp.name !=null and emp.name!=''">
+                    and e.name like concat('%',#{emp.name},'%')
+                </if>
+            </if>
+        </where>
+        order by et.id desc
+        <if test="page !=null and size!=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+    <select id="getTotalt" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM
+        employee e
+        RIGHT JOIN employeetrain et ON e.id = et.eid
+        <where>
+            <if test="emp!=null">
+                <if test="emp.name !=null and emp.name!=''">
+                    and e.name like concat('%',#{emp.name},'%')
+                </if>
+            </if>
+        </where>
+    </select>
+    <select id="getTotalA" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        from employee e
+        RIGHT JOIN appraise a ON e.id = a.eid
+        <where>
+            <if test="emp!=null">
+                <if test="emp.name !=null and emp.name!=''">
+                    and e.name like concat('%',#{emp.name},'%')
+                </if>
+            </if>
+        </where>
+        order by a.id desc
+    </select>
+    <select id="getEmployeeAByPage" resultMap="BaseResultMapecA">
+        SELECT
+        e.*,
+        eid, appDate, appResult, appContent, remark,a.id AS aid
+        FROM
+        employee e
+        RIGHT JOIN appraise a ON e.id = a.eid
+        <where>
+            <if test="emp!=null">
+                <if test="emp.name !=null and emp.name!=''">
+                    and e.name like concat('%',#{emp.name},'%')
+                </if>
+            </if>
+        </where>
+        order by a.id desc
+        <if test="page !=null and size!=null">
+            limit #{page},#{size}
+        </if>
+
+    </select>
+    <select id="getEmployeeByPageT" resultMap="AllEmployeeInfo">
+        select e.*,p.`id` as pid,p.`name` as pname,n.`id` as nid,n.`name` as nname,d.`id` as did,d.`name` as
+        dname,j.`id` as jid,j.`name` as jname,pos.`id` as posid,pos.`name` as posname
+        from employee e,nation n,politicsstatus p,department d,joblevel j,position pos
+        where e.`nationId`=n.`id` and e.`politicId`=p.`id` and
+        e.`departmentId`=d.`id` and e.`jobLevelId`=j.`id` and e.`posId`=pos.`id`
+        and e.id not in ( select eid from employeetrain )
+        <if test="emp != null">
+            <if test="emp.name !=null and emp.name!=''">
+                and e.name like concat('%',#{emp.name},'%')
+            </if>
+            <if test="emp.politicid !=null">
+                and e.politicId =#{emp.politicid}
+            </if>
+            <if test="emp.nationid !=null">
+                and e.nationId =#{emp.nationid}
+            </if>
+            <if test="emp.joblevelid !=null">
+                and e.jobLevelId =#{emp.joblevelid}
+            </if>
+            <if test="emp.departmentid !=null">
+                and e.departmentId =#{emp.departmentid}
+            </if>
+            <if test="emp.engageform !=null and emp.engageform!=''">
+                and e.engageForm =#{emp.engageform}
+            </if>
+            <if test="emp.posid !=null">
+                and e.posId =#{emp.posid}
+            </if>
+        </if>
+        <if test="beginDateScope !=null">
+            and e.beginDate between #{beginDateScope[0]} and #{beginDateScope[1]}
+        </if>
+        order by e.workID DESC
+        <if test="page !=null and size!=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+    <select id="getTotalT" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM employee e
+        <where>
+            and e.id not in ( select eid from employeetrain )
+            <if test="emp!=null">
+                <if test="emp.name !=null and emp.name!=''">
+                    and e.name like concat('%',#{emp.name},'%')
+                </if>
+                <if test="emp.politicid !=null">
+                    and e.politicId =#{emp.politicid}
+                </if>
+                <if test="emp.nationId !=null">
+                    and e.nationId =#{emp.nationid}
+                </if>
+                <if test="emp.joblevelid !=null">
+                    and e.jobLevelId =#{emp.joblevelid}
+                </if>
+                <if test="emp.departmentid !=null">
+                    and e.departmentId =#{emp.departmentid}
+                </if>
+                <if test="emp.engageform !=null and emp.engageform!=''">
+                    and e.engageForm =#{emp.engageform}
+                </if>
+                <if test="emp.posId !=null">
+                    and e.posId =#{emp.posid}
+                </if>
+            </if>
+            <if test="beginDateScope !=null">
+                and e.beginDate between #{beginDateScope[0]} and #{beginDateScope[1]}
+            </if>
+        </where>
+    </select>
+    <select id="getEmployeeByPageA" resultMap="AllEmployeeInfo">
+        select e.*,p.`id` as pid,p.`name` as pname,n.`id` as nid,n.`name` as nname,d.`id` as did,d.`name` as
+        dname,j.`id` as jid,j.`name` as jname,pos.`id` as posid,pos.`name` as posname
+        from employee e,nation n,politicsstatus p,department d,joblevel j,position pos
+        where e.`nationId`=n.`id` and e.`politicId`=p.`id` and
+        e.`departmentId`=d.`id` and e.`jobLevelId`=j.`id` and e.`posId`=pos.`id`
+        and e.id not in ( select eid from appraise )
+        <if test="emp != null">
+            <if test="emp.name !=null and emp.name!=''">
+                and e.name like concat('%',#{emp.name},'%')
+            </if>
+            <if test="emp.politicid !=null">
+                and e.politicId =#{emp.politicid}
+            </if>
+            <if test="emp.nationid !=null">
+                and e.nationId =#{emp.nationid}
+            </if>
+            <if test="emp.joblevelid !=null">
+                and e.jobLevelId =#{emp.joblevelid}
+            </if>
+            <if test="emp.departmentid !=null">
+                and e.departmentId =#{emp.departmentid}
+            </if>
+            <if test="emp.engageform !=null and emp.engageform!=''">
+                and e.engageForm =#{emp.engageform}
+            </if>
+            <if test="emp.posid !=null">
+                and e.posId =#{emp.posid}
+            </if>
+        </if>
+        <if test="beginDateScope !=null">
+            and e.beginDate between #{beginDateScope[0]} and #{beginDateScope[1]}
+        </if>
+        order by e.workID DESC
+        <if test="page !=null and size!=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+    <select id="getTotala" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM employee e
+        <where>
+            and e.id not in ( select eid from appraise )
+            <if test="emp!=null">
+                <if test="emp.name !=null and emp.name!=''">
+                    and e.name like concat('%',#{emp.name},'%')
+                </if>
+                <if test="emp.politicid !=null">
+                    and e.politicId =#{emp.politicid}
+                </if>
+                <if test="emp.nationId !=null">
+                    and e.nationId =#{emp.nationid}
+                </if>
+                <if test="emp.joblevelid !=null">
+                    and e.jobLevelId =#{emp.joblevelid}
+                </if>
+                <if test="emp.departmentid !=null">
+                    and e.departmentId =#{emp.departmentid}
+                </if>
+                <if test="emp.engageform !=null and emp.engageform!=''">
+                    and e.engageForm =#{emp.engageform}
+                </if>
+                <if test="emp.posId !=null">
+                    and e.posId =#{emp.posid}
+                </if>
+            </if>
+            <if test="beginDateScope !=null">
+                and e.beginDate between #{beginDateScope[0]} and #{beginDateScope[1]}
+            </if>
+        </where>
+    </select>
+    <select id="getEmployeeByPageM" resultMap="BaseResultMapecM">
+        SELECT
+        e.*,
+        p.`id` AS pid,
+        p.`name` AS pname,
+        n.`id` AS nid,
+        n.`name` AS nname,
+        d.`id` AS did,
+        d.`name` AS dname,
+        j.`id` AS jid,
+        j.`name` AS jname,
+        pos.`id` AS posid,
+        pos.`name` AS posname,
+        em.afterDepId,
+        em.afterJobId,
+        em.removeDate ,
+        em.reason,
+        dt.`name` AS dtname,
+        jl.`name` AS jlname
+        FROM
+        employee e
+        LEFT JOIN employeeremove em ON em.eid = e.id
+        LEFT JOIN department dt ON em.afterDepId=dt.id
+        LEFT JOIN joblevel jl ON em.afterJobId = jl.id ,
+        nation n,
+        politicsstatus p,
+        department d,
+        joblevel j,
+        position pos
+        WHERE
+        e.`nationId` = n.`id`
+        AND e.`politicId` = p.`id`
+        AND e.`departmentId` = d.`id`
+        AND e.`jobLevelId` = j.`id`
+        AND e.`posId` = pos.`id`
+
+        <if test="emp != null">
+            <if test="emp.name !=null and emp.name!=''">
+                and e.name like concat('%',#{emp.name},'%')
+            </if>
+            <if test="emp.politicid !=null">
+                and e.politicId =#{emp.politicid}
+            </if>
+            <if test="emp.nationid !=null">
+                and e.nationId =#{emp.nationid}
+            </if>
+            <if test="emp.joblevelid !=null">
+                and e.jobLevelId =#{emp.joblevelid}
+            </if>
+            <if test="emp.departmentid !=null">
+                and e.departmentId =#{emp.departmentid}
+            </if>
+            <if test="emp.engageform !=null and emp.engageform!=''">
+                and e.engageForm =#{emp.engageform}
+            </if>
+            <if test="emp.posid !=null">
+                and e.posId =#{emp.posid}
+            </if>
+        </if>
+        <if test="beginDateScope !=null">
+            and e.beginDate between #{beginDateScope[0]} and #{beginDateScope[1]}
+        </if>
+        order by e.workID DESC
+        <if test="page !=null and size!=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+    <select id="getTotalM" resultType="java.lang.Long">
+        SELECT
+        count(*)
+        FROM
+        employee e LEFT JOIN employeeremove em ON em.eid = e.id,
+        nation n,
+        politicsstatus p,
+        department d,
+        joblevel j,
+        position pos
+        WHERE
+        e.`nationId` = n.`id`
+        AND e.`politicId` = p.`id`
+        AND e.`departmentId` = d.`id`
+        AND e.`jobLevelId` = j.`id`
+        AND e.`posId` = pos.`id`
+
+        <if test="emp != null">
+            <if test="emp.name !=null and emp.name!=''">
+                and e.name like concat('%',#{emp.name},'%')
+            </if>
+            <if test="emp.politicid !=null">
+                and e.politicId =#{emp.politicid}
+            </if>
+            <if test="emp.nationid !=null">
+                and e.nationId =#{emp.nationid}
+            </if>
+            <if test="emp.joblevelid !=null">
+                and e.jobLevelId =#{emp.joblevelid}
+            </if>
+            <if test="emp.departmentid !=null">
+                and e.departmentId =#{emp.departmentid}
+            </if>
+            <if test="emp.engageform !=null and emp.engageform!=''">
+                and e.engageForm =#{emp.engageform}
+            </if>
+            <if test="emp.posid !=null">
+                and e.posId =#{emp.posid}
+            </if>
+        </if>
+        <if test="beginDateScope !=null">
+            and e.beginDate between #{beginDateScope[0]} and #{beginDateScope[1]}
+        </if>
+        order by e.workID DESC
+
+
+    </select>
+    <select id="getEmployeeByPageS" resultMap="EmployeeWithSalary">
+        SELECT DISTINCT
+        e.*,
+        d.`name` AS dname,
+        s.`id` AS sid,
+        s.`accumulationFundBase` AS saccumulationFundBase,
+        s.`accumulationFundPer` AS saccumulationFundPer,
+        s.`allSalary` AS sallSalary,
+        s.`basicSalary` AS sbasicSalary,
+        s.`bonus` AS sbonus,
+        s.`createDate` AS screateDate,
+        s.`lunchSalary` AS slunchSalary,
+        s.`medicalBase` AS smedicalBase,
+        s.`medicalPer` AS smedicalPer,
+        s.`name` AS sname,
+        s.`pensionBase` AS spensionBase,
+        s.`pensionPer` AS spensionPer,
+        s.`trafficSalary` AS strafficSalary,
+        j.`id` AS jid,
+        j.`name` AS jname,
+        pos.`id` AS posid,
+        pos.`name` AS posname
+        FROM
+        employee e
+        INNER JOIN empsalary es ON e.`id` = es.`eid`
+        INNER JOIN salary s ON es.`sid` = s.`id`
+        INNER JOIN department d ON e.`departmentId` = d.`id`
+        INNER JOIN joblevel j ON e.`jobLevelId` = j.`id`
+        INNER JOIN position pos ON e.posId = pos.id
+        <if test="emp != null">
+            <if test="emp.name !=null and emp.name!=''">
+                and e.name like concat('%',#{emp.name},'%')
+            </if>
+            <if test="emp.politicid !=null">
+                and e.politicId =#{emp.politicid}
+            </if>
+            <if test="emp.nationid !=null">
+                and e.nationId =#{emp.nationid}
+            </if>
+            <if test="emp.joblevelid !=null">
+                and e.jobLevelId =#{emp.joblevelid}
+            </if>
+            <if test="emp.departmentid !=null">
+                and e.departmentId =#{emp.departmentid}
+            </if>
+            <if test="emp.engageform !=null and emp.engageform!=''">
+                and e.engageForm =#{emp.engageform}
+            </if>
+            <if test="emp.posid !=null">
+                and e.posId =#{emp.posid}
+            </if>
+        </if>
+        <if test="beginDateScope !=null">
+            and e.beginDate between #{beginDateScope[0]} and #{beginDateScope[1]}
+        </if>
+        <if test="page !=null and size !=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+    <select id="getTotaS" resultType="java.lang.Long">
+    SELECT DISTINCT
+        COUNT( *)
+    FROM
+        employee e
+	INNER JOIN empsalary es ON e.`id` = es.`eid`
+	INNER JOIN salary s ON es.`sid` = s.`id`
+	INNER JOIN department d ON e.`departmentId` = d.`id`
+	INNER  JOIN joblevel j ON e.`jobLevelId` = j.`id`
+	INNER JOIN position pos ON e.posId = pos.id
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from employee
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByPrimaryKeys">
+        delete from employee
+        where id in
+        <foreach open="(" close=")" separator="," item="id" collection="ids">
+            #{id,jdbcType=INTEGER}
+        </foreach>
+    </delete>
+    <insert id="addEmps">
+        insert into employee (name, gender,
+        birthday, idCard, wedlock, nationId,
+        nativePlace, politicId, email,
+        phone, address, departmentId,
+        jobLevelId, posId, engageForm,
+        tiptopDegree, specialty, school,
+        beginDate, workState, workID,
+        contractTerm, conversionTime, notWorkDate,
+        beginContract, endContract, workAge
+        )
+        values
+        <foreach collection="list" separator="," item="emp">
+            (#{emp.name,jdbcType=VARCHAR}, #{emp.gender,jdbcType=CHAR},
+            #{emp.birthday,jdbcType=DATE}, #{emp.idcard,jdbcType=CHAR}, #{emp.wedlock,jdbcType=CHAR},
+            #{emp.nationid,jdbcType=INTEGER},
+            #{emp.nativeplace,jdbcType=VARCHAR}, #{emp.politicid,jdbcType=INTEGER}, #{emp.email,jdbcType=VARCHAR},
+            #{emp.phone,jdbcType=VARCHAR}, #{emp.address,jdbcType=VARCHAR}, #{emp.departmentid,jdbcType=INTEGER},
+            #{emp.joblevelid,jdbcType=INTEGER}, #{emp.posid,jdbcType=INTEGER}, #{emp.engageform,jdbcType=VARCHAR},
+            #{emp.tiptopdegree,jdbcType=CHAR}, #{emp.specialty,jdbcType=VARCHAR}, #{emp.school,jdbcType=VARCHAR},
+            #{emp.begindate,jdbcType=DATE}, #{emp.workstate,jdbcType=CHAR}, #{emp.workid,jdbcType=CHAR},
+            #{emp.contractterm,jdbcType=DOUBLE}, #{emp.conversiontime,jdbcType=DATE}, #{emp.notworkdate,jdbcType=DATE},
+            #{emp.begincontract,jdbcType=DATE}, #{emp.endcontract,jdbcType=DATE}, #{emp.workage,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
+    <insert id="insert" parameterType="com.liruilong.hros.model.Employee">
+    insert into employee (id, name, gender, 
+      birthday, idCard, wedlock, nationId, 
+      nativePlace, politicId, email, 
+      phone, address, departmentId, 
+      jobLevelId, posId, engageForm, 
+      tiptopDegree, specialty, school, 
+      beginDate, workState, workID, 
+      contractTerm, conversionTime, notWorkDate, 
+      beginContract, endContract, workAge
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{gender,jdbcType=CHAR}, 
+      #{birthday,jdbcType=DATE}, #{idcard,jdbcType=CHAR}, #{wedlock,jdbcType=CHAR}, #{nationid,jdbcType=INTEGER}, 
+      #{nativeplace,jdbcType=VARCHAR}, #{politicid,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{departmentid,jdbcType=INTEGER}, 
+      #{joblevelid,jdbcType=INTEGER}, #{posid,jdbcType=INTEGER}, #{engageform,jdbcType=VARCHAR}, 
+      #{tiptopdegree,jdbcType=CHAR}, #{specialty,jdbcType=VARCHAR}, #{school,jdbcType=VARCHAR}, 
+      #{begindate,jdbcType=DATE}, #{workstate,jdbcType=CHAR}, #{workid,jdbcType=CHAR}, 
+      #{contractterm,jdbcType=DOUBLE}, #{conversiontime,jdbcType=DATE}, #{notworkdate,jdbcType=DATE}, 
+      #{begincontract,jdbcType=DATE}, #{endcontract,jdbcType=DATE}, #{workage,jdbcType=INTEGER}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.liruilong.hros.model.Employee">
+        insert into employee
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="birthday != null">
+                birthday,
+            </if>
+            <if test="idcard != null">
+                idCard,
+            </if>
+            <if test="wedlock != null">
+                wedlock,
+            </if>
+            <if test="nationid != null">
+                nationId,
+            </if>
+            <if test="nativeplace != null">
+                nativePlace,
+            </if>
+            <if test="politicid != null">
+                politicId,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="departmentid != null">
+                departmentId,
+            </if>
+            <if test="joblevelid != null">
+                jobLevelId,
+            </if>
+            <if test="posid != null">
+                posId,
+            </if>
+            <if test="engageform != null">
+                engageForm,
+            </if>
+            <if test="tiptopdegree != null">
+                tiptopDegree,
+            </if>
+            <if test="specialty != null">
+                specialty,
+            </if>
+            <if test="school != null">
+                school,
+            </if>
+            <if test="begindate != null">
+                beginDate,
+            </if>
+            <if test="workstate != null">
+                workState,
+            </if>
+            <if test="workid != null">
+                workID,
+            </if>
+            <if test="contractterm != null">
+                contractTerm,
+            </if>
+            <if test="conversiontime != null">
+                conversionTime,
+            </if>
+            <if test="notworkdate != null">
+                notWorkDate,
+            </if>
+            <if test="begincontract != null">
+                beginContract,
+            </if>
+            <if test="endcontract != null">
+                endContract,
+            </if>
+            <if test="workage != null">
+                workAge,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                #{gender,jdbcType=CHAR},
+            </if>
+            <if test="birthday != null">
+                #{birthday,jdbcType=DATE},
+            </if>
+            <if test="idcard != null">
+                #{idcard,jdbcType=CHAR},
+            </if>
+            <if test="wedlock != null">
+                #{wedlock,jdbcType=CHAR},
+            </if>
+            <if test="nationid != null">
+                #{nationid,jdbcType=INTEGER},
+            </if>
+            <if test="nativeplace != null">
+                #{nativeplace,jdbcType=VARCHAR},
+            </if>
+            <if test="politicid != null">
+                #{politicid,jdbcType=INTEGER},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentid != null">
+                #{departmentid,jdbcType=INTEGER},
+            </if>
+            <if test="joblevelid != null">
+                #{joblevelid,jdbcType=INTEGER},
+            </if>
+            <if test="posid != null">
+                #{posid,jdbcType=INTEGER},
+            </if>
+            <if test="engageform != null">
+                #{engageform,jdbcType=VARCHAR},
+            </if>
+            <if test="tiptopdegree != null">
+                #{tiptopdegree,jdbcType=CHAR},
+            </if>
+            <if test="specialty != null">
+                #{specialty,jdbcType=VARCHAR},
+            </if>
+            <if test="school != null">
+                #{school,jdbcType=VARCHAR},
+            </if>
+            <if test="begindate != null">
+                #{begindate,jdbcType=DATE},
+            </if>
+            <if test="workstate != null">
+                #{workstate,jdbcType=CHAR},
+            </if>
+            <if test="workid != null">
+                #{workid,jdbcType=CHAR},
+            </if>
+            <if test="contractterm != null">
+                #{contractterm,jdbcType=DOUBLE},
+            </if>
+            <if test="conversiontime != null">
+                #{conversiontime,jdbcType=DATE},
+            </if>
+            <if test="notworkdate != null">
+                #{notworkdate,jdbcType=DATE},
+            </if>
+            <if test="begincontract != null">
+                #{begincontract,jdbcType=DATE},
+            </if>
+            <if test="endcontract != null">
+                #{endcontract,jdbcType=DATE},
+            </if>
+            <if test="workage != null">
+                #{workage,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <insert id="updateEmployeeSalaryById">
+        REPLACE INTO empsalary (eid,sid) VALUES(#{eid},#{sid})
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.liruilong.hros.model.Employee">
+        update employee
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                gender = #{gender,jdbcType=CHAR},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday,jdbcType=DATE},
+            </if>
+            <if test="idcard != null">
+                idCard = #{idcard,jdbcType=CHAR},
+            </if>
+            <if test="wedlock != null">
+                wedlock = #{wedlock,jdbcType=CHAR},
+            </if>
+            <if test="nationid != null">
+                nationId = #{nationid,jdbcType=INTEGER},
+            </if>
+            <if test="nativeplace != null">
+                nativePlace = #{nativeplace,jdbcType=VARCHAR},
+            </if>
+            <if test="politicid != null">
+                politicId = #{politicid,jdbcType=INTEGER},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentid != null">
+                departmentId = #{departmentid,jdbcType=INTEGER},
+            </if>
+            <if test="joblevelid != null">
+                jobLevelId = #{joblevelid,jdbcType=INTEGER},
+            </if>
+            <if test="posid != null">
+                posId = #{posid,jdbcType=INTEGER},
+            </if>
+            <if test="engageform != null">
+                engageForm = #{engageform,jdbcType=VARCHAR},
+            </if>
+            <if test="tiptopdegree != null">
+                tiptopDegree = #{tiptopdegree,jdbcType=CHAR},
+            </if>
+            <if test="specialty != null">
+                specialty = #{specialty,jdbcType=VARCHAR},
+            </if>
+            <if test="school != null">
+                school = #{school,jdbcType=VARCHAR},
+            </if>
+            <if test="begindate != null">
+                beginDate = #{begindate,jdbcType=DATE},
+            </if>
+            <if test="workstate != null">
+                workState = #{workstate,jdbcType=CHAR},
+            </if>
+            <if test="workid != null">
+                workID = #{workid,jdbcType=CHAR},
+            </if>
+            <if test="contractterm != null">
+                contractTerm = #{contractterm,jdbcType=DOUBLE},
+            </if>
+            <if test="conversiontime != null">
+                conversionTime = #{conversiontime,jdbcType=DATE},
+            </if>
+            <if test="notworkdate != null">
+                notWorkDate = #{notworkdate,jdbcType=DATE},
+            </if>
+            <if test="begincontract != null">
+                beginContract = #{begincontract,jdbcType=DATE},
+            </if>
+            <if test="endcontract != null">
+                endContract = #{endcontract,jdbcType=DATE},
+            </if>
+            <if test="workage != null">
+                workAge = #{workage,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.liruilong.hros.model.Employee">
+    update employee
+    set name = #{name,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=CHAR},
+      birthday = #{birthday,jdbcType=DATE},
+      idCard = #{idcard,jdbcType=CHAR},
+      wedlock = #{wedlock,jdbcType=CHAR},
+      nationId = #{nationid,jdbcType=INTEGER},
+      nativePlace = #{nativeplace,jdbcType=VARCHAR},
+      politicId = #{politicid,jdbcType=INTEGER},
+      email = #{email,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      departmentId = #{departmentid,jdbcType=INTEGER},
+      jobLevelId = #{joblevelid,jdbcType=INTEGER},
+      posId = #{posid,jdbcType=INTEGER},
+      engageForm = #{engageform,jdbcType=VARCHAR},
+      tiptopDegree = #{tiptopdegree,jdbcType=CHAR},
+      specialty = #{specialty,jdbcType=VARCHAR},
+      school = #{school,jdbcType=VARCHAR},
+      beginDate = #{begindate,jdbcType=DATE},
+      workState = #{workstate,jdbcType=CHAR},
+      workID = #{workid,jdbcType=CHAR},
+      contractTerm = #{contractterm,jdbcType=DOUBLE},
+      conversionTime = #{conversiontime,jdbcType=DATE},
+      notWorkDate = #{notworkdate,jdbcType=DATE},
+      beginContract = #{begincontract,jdbcType=DATE},
+      endContract = #{endcontract,jdbcType=DATE},
+      workAge = #{workage,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

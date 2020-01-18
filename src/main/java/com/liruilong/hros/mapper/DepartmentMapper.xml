@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liruilong.hros.mapper.DepartmentMapper" >
+  <resultMap id="BaseResultMap" type="com.liruilong.hros.model.Department" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="parentId" property="parentid" jdbcType="INTEGER" />
+    <result column="depPath" property="deppath" jdbcType="VARCHAR" />
+    <result column="enabled" property="enabled" jdbcType="BIT" />
+    <result column="isParent" property="isparent" jdbcType="BIT" />
+  </resultMap>
+  <resultMap id="DepartmentWithChildren" type="com.liruilong.hros.model.Department" extends="BaseResultMap">
+    <collection property="children" ofType="com.liruilong.hros.model.Department"
+                select="com.liruilong.hros.mapper.DepartmentMapper.getAllDepartmentsByParentId" column="id" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, parentId, depPath, enabled, isParent
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from department
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getAllDepartmentsByParentId" resultMap="DepartmentWithChildren">
+    select * from department where parentId=#{pid};
+  </select>
+  <select id="getAllDepartmentsWithOutChildren" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List">
+    </include>
+    from department;
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from department
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <select id="deleteDepById" statementType="CALLABLE">
+    call deleteDep(#{id,mode=IN,jdbcType=INTEGER},#{result,mode=OUT,jdbcType=INTEGER})
+  </select>
+  <insert id="insert" parameterType="com.liruilong.hros.model.Department" >
+    insert into department (id, name, parentId, 
+      depPath, enabled, isParent)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{parentid,jdbcType=INTEGER}, 
+      #{deppath,jdbcType=VARCHAR}, #{enabled,jdbcType=BIT}, #{isparent,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.liruilong.hros.model.Department" >
+    insert into department
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="parentid != null" >
+        parentId,
+      </if>
+      <if test="deppath != null" >
+        depPath,
+      </if>
+      <if test="enabled != null" >
+        enabled,
+      </if>
+      <if test="isparent != null" >
+        isParent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="deppath != null" >
+        #{deppath,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=BIT},
+      </if>
+      <if test="isparent != null" >
+        #{isparent,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="addDep" statementType="CALLABLE">
+    call addDep(#{name,mode=IN,jdbcType=VARCHAR},#{parentid,mode=IN,jdbcType=INTEGER},#{enabled,mode=IN,jdbcType=BOOLEAN},#{result,mode=OUT,jdbcType=INTEGER},#{id,mode=OUT,jdbcType=INTEGER})
+  </select>
+  <update id="updateByPrimaryKeySelective" parameterType="com.liruilong.hros.model.Department" >
+    update department
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        parentId = #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="deppath != null" >
+        depPath = #{deppath,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        enabled = #{enabled,jdbcType=BIT},
+      </if>
+      <if test="isparent != null" >
+        isParent = #{isparent,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.liruilong.hros.model.Department" >
+    update department
+    set name = #{name,jdbcType=VARCHAR},
+      parentId = #{parentid,jdbcType=INTEGER},
+      depPath = #{deppath,jdbcType=VARCHAR},
+      enabled = #{enabled,jdbcType=BIT},
+      isParent = #{isparent,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

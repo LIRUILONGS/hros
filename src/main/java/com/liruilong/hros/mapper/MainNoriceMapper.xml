@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liruilong.hros.mapper.MainNoriceMapper">
+    <resultMap id="BaseResultMap" type="com.liruilong.hros.model.MainNorice">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="authon" property="authon" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <resultMap id="BaseResultMapbody" type="com.liruilong.hros.model.MainNorice" extends="BaseResultMap">
+        <result column="mainbody" property="mainbody" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id, title, authon, create_time, update_time
+  </sql>
+    <sql id="Blob_Column_List">
+    mainbody
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMapbody" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>,
+        <include refid="Blob_Column_List"/>
+        from main_notice order by id
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="getAllsMainNorice" resultMap="BaseResultMap">
+        select id, title, authon, create_time, update_time ,mainbody
+        FROM main_notice
+    <if test="keyword != null and keyword != ''">
+        where   title like concat('%',#{keyword},'%')
+    </if>
+     order by id desc limit #{page},#{size}
+  </select>
+    <select id="getAllsMainNoricebody" resultMap="BaseResultMapbody">
+        select
+        <include refid="Base_Column_List"/>,
+        <include refid="Blob_Column_List"/>
+        from main_notice order by id desc limit 0,50
+    </select>
+    <select id="gettotal" resultType="java.lang.Long">
+        select
+        count(*)
+        from main_notice
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from main_notice
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <delete id="deldteMainNorices">
+         delete from main_notice
+    where id in
+    <foreach collection="ids" item="id" separator="," close=")" open="(">
+        #{id,jdbcType=INTEGER}
+    </foreach>
+    </delete>
+    <insert id="insert" parameterType="com.liruilong.hros.model.MainNorice">
+    insert into main_notice (id, title, authon, 
+      create_time, update_time, mainbody
+      )
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{authon,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{mainbody,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.liruilong.hros.model.MainNorice">
+        insert into main_notice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="authon != null">
+                authon,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="mainbody != null">
+                mainbody,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="authon != null">
+                #{authon,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="mainbody != null">
+                #{mainbody,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.liruilong.hros.model.MainNorice">
+        update main_notice
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="mainbody != null">
+                mainbody = #{mainbody,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.liruilong.hros.model.MainNorice">
+    update main_notice
+    set title = #{title,jdbcType=VARCHAR},
+      authon = #{authon,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      mainbody = #{mainbody,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.liruilong.hros.model.MainNorice">
+    update main_notice
+    set title = #{title,jdbcType=VARCHAR},
+      authon = #{authon,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
