@@ -20,4 +20,6 @@ public interface OpLogMapper {
     int updateByPrimaryKey(OpLog record);
 
     List<OpLog>  getAllsOplog(@Param("page") Integer page, @Param("size") Integer size,@Param("logtype") Integer logtype, @Param("beginDateScope") Date[] beginDateScope  );
+
+    List<OpLog>  getAllsOplogm();
 }

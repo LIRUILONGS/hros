@@ -32,4 +32,7 @@ public class OplogService {
 
     }
 
+    public List<OpLog> getAllsOplogm() {
+        return opLogMapper.getAllsOplogm();
+    }
 }

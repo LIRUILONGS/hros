@@ -127,6 +127,38 @@
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="sum" property="sum" jdbcType="INTEGER"/>
     </resultMap>
+    <resultMap id="AdvancedResultMap" type="com.liruilong.hros.model.Employee" extends="AllEmployeeInfo">
+        <association property="salary" javaType="com.liruilong.hros.model.Salary">
+            <id column="sid" property="id" jdbcType="INTEGER"/>
+            <result column="sbasicSalary" property="basicsalary" jdbcType="INTEGER"/>
+            <result column="sbonus" property="bonus" jdbcType="INTEGER"/>
+            <result column="slunchSalary" property="lunchsalary" jdbcType="INTEGER"/>
+            <result column="strafficSalary" property="trafficsalary" jdbcType="INTEGER"/>
+            <result column="sallSalary" property="allsalary" jdbcType="INTEGER"/>
+            <result column="spensionBase" property="pensionbase" jdbcType="INTEGER"/>
+            <result column="spensionPer" property="pensionper" jdbcType="REAL"/>
+            <result column="screateDate" property="createdate" jdbcType="TIMESTAMP"/>
+            <result column="smedicalBase" property="medicalbase" jdbcType="INTEGER"/>
+            <result column="smedicalPer" property="medicalper" jdbcType="REAL"/>
+            <result column="saccumulationFundBase" property="accumulationfundbase" jdbcType="INTEGER"/>
+            <result column="saccumulationFundPer" property="accumulationfundper" jdbcType="REAL"/>
+            <result column="sname" property="name" jdbcType="VARCHAR"/>
+        </association>
+        <association property="employeetrainList" javaType="com.liruilong.hros.model.Employeetrain">
+            <result column="trainstartDate" property="trainstartdate" jdbcType="DATE"/>
+            <result column="trainfinishDate" property="trainfinishdate" jdbcType="TIMESTAMP"/>
+            <result column="trainContent" property="traincontent" jdbcType="VARCHAR"/>
+            <result column="trainstatus" property="trainstatus" jdbcType="TINYINT"/>
+        </association>
+        <association property="appraise" javaType="com.liruilong.hros.model.Appraise">
+            <id column="aid" property="id" jdbcType="INTEGER"/>
+            <result column="eid" property="eid" jdbcType="INTEGER"/>
+            <result column="appDate" property="appdate" jdbcType="DATE"/>
+            <result column="appResult" property="appresult" jdbcType="VARCHAR"/>
+            <result column="appContent" property="appcontent" jdbcType="VARCHAR"/>
+            <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
     <sql id="Base_Column_List">
     id, name, gender, birthday, idCard, wedlock, nationId, nativePlace, politicId, email, 
     phone, address, departmentId, jobLevelId, posId, engageForm, tiptopDegree, specialty, 
@@ -257,6 +289,7 @@
         FROM employee e LEFT JOIN
         empsalary es ON e.`id`=es.`eid` LEFT JOIN salary s ON es.`sid`=s.`id` LEFT JOIN department d ON
         e.`departmentId`=d.`id` left join joblevel j on e.`jobLevelId`=j.`id` left join position pos on e.posId = pos.id
+        order by e.workID DESC
         <if test="page !=null and size !=null">
             limit #{page},#{size}
         </if>
@@ -695,6 +728,139 @@
 	INNER  JOIN joblevel j ON e.`jobLevelId` = j.`id`
 	INNER JOIN position pos ON e.posId = pos.id
     </select>
+    <select id="getAllsEmpadvanced" resultMap="AdvancedResultMap">
+        SELECT
+        e.*,
+        p.`id` AS pid,
+        p.`name` AS pname,
+        n.`id` AS nid,
+        n.`name` AS nname,
+        d.`id` AS did,
+        d.`name` AS dname,
+        j.`id` AS jid,
+        j.`name` AS jname,
+        pos.`id` AS posid,
+        pos.`name` AS posname,
+        s.`id` AS sid,
+        s.`accumulationFundBase` AS saccumulationFundBase,
+        s.`accumulationFundPer` AS saccumulationFundPer,
+        s.`allSalary` AS sallSalary,
+        s.`basicSalary` AS sbasicSalary,
+        s.`bonus` AS sbonus,
+        s.`createDate` AS screateDate,
+        s.`lunchSalary` AS slunchSalary,
+        s.`medicalBase` AS smedicalBase,
+        s.`medicalPer` AS smedicalPer,
+        s.`name` AS sname,
+        s.`pensionBase` AS spensionBase,
+        s.`pensionPer` AS spensionPer,
+        s.`trafficSalary` AS strafficSalary,
+        et.trainstartDate,
+        et.trainfinishDate,
+        et.trainContent,
+        et.trainstatus,
+        a.appDate,
+        a.appResult,
+        a.appContent
+        FROM
+        employee e
+        LEFT JOIN empsalary es ON e.`id` = es.`eid`
+        LEFT JOIN salary s ON es.`sid` = s.`id`
+        LEFT JOIN	 employeetrain et ON e.id = et.eid
+        LEFT JOIN appraise a ON e.id = a.eid,
+        nation n,
+        politicsstatus p,
+        department d,
+        joblevel j,
+        position pos
+
+        WHERE
+        e.`nationId` = n.`id`
+        AND e.`politicId` = p.`id`
+        AND e.`departmentId` = d.`id`
+        AND e.`jobLevelId` = j.`id`
+        AND e.`posId` = pos.`id`
+        <if test="emp != null">
+            <if test="emp.name !=null and emp.name!=''">
+                and e.name like concat('%',#{emp.name},'%')
+            </if>
+            <if test="emp.politicid !=null">
+                and e.politicId =#{emp.politicid}
+            </if>
+            <if test="emp.nationid !=null">
+                and e.nationId =#{emp.nationid}
+            </if>
+            <if test="emp.joblevelid !=null">
+                and e.jobLevelId =#{emp.joblevelid}
+            </if>
+            <if test="emp.departmentid !=null">
+                and e.departmentId =#{emp.departmentid}
+            </if>
+            <if test="emp.engageform !=null and emp.engageform!=''">
+                and e.engageForm =#{emp.engageform}
+            </if>
+            <if test="emp.posid !=null">
+                and e.posId =#{emp.posid}
+            </if>
+        </if>
+        <if test="beginDateScope !=null">
+            and e.beginDate between #{beginDateScope[0]} and #{beginDateScope[1]}
+        </if>
+        order by e.workID DESC
+        <if test="page !=null and size!=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+    <select id="getTotalE" resultType="java.lang.Long">
+        SELECT
+        COUNT(*)
+        FROM
+        employee e
+        LEFT JOIN empsalary es ON e.`id` = es.`eid`
+        LEFT JOIN salary s ON es.`sid` = s.`id`
+        LEFT JOIN	 employeetrain et ON e.id = et.eid
+        LEFT JOIN appraise a ON e.id = a.eid,
+        nation n,
+        politicsstatus p,
+        department d,
+        joblevel j,
+        position pos
+
+        WHERE
+        e.`nationId` = n.`id`
+        AND e.`politicId` = p.`id`
+        AND e.`departmentId` = d.`id`
+        AND e.`jobLevelId` = j.`id`
+        AND e.`posId` = pos.`id`
+        <if test="emp != null">
+            <if test="emp.name !=null and emp.name!=''">
+                and e.name like concat('%',#{emp.name},'%')
+            </if>
+            <if test="emp.politicid !=null">
+                and e.politicId =#{emp.politicid}
+            </if>
+            <if test="emp.nationid !=null">
+                and e.nationId =#{emp.nationid}
+            </if>
+            <if test="emp.joblevelid !=null">
+                and e.jobLevelId =#{emp.joblevelid}
+            </if>
+            <if test="emp.departmentid !=null">
+                and e.departmentId =#{emp.departmentid}
+            </if>
+            <if test="emp.engageform !=null and emp.engageform!=''">
+                and e.engageForm =#{emp.engageform}
+            </if>
+            <if test="emp.posid !=null">
+                and e.posId =#{emp.posid}
+            </if>
+        </if>
+        <if test="beginDateScope !=null">
+            and e.beginDate between #{beginDateScope[0]} and #{beginDateScope[1]}
+        </if>
+        order by e.workID DESC
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from employee
     where id = #{id,jdbcType=INTEGER}

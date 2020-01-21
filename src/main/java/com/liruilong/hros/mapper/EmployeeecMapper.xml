@@ -1,36 +1,58 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.liruilong.hros.mapper.EmployeeecMapper" >
-  <resultMap id="BaseResultMap" type="com.liruilong.hros.model.Employeeec" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="eid" property="eid" jdbcType="INTEGER" />
-    <result column="ecDate" property="ecdate" jdbcType="DATE" />
-    <result column="ecReason" property="ecreason" jdbcType="VARCHAR" />
-    <result column="ecPoint" property="ecpoint" jdbcType="INTEGER" />
-    <result column="ecType" property="ectype" jdbcType="INTEGER" />
-    <result column="remark" property="remark" jdbcType="VARCHAR" />
-  </resultMap>
-  <sql id="Base_Column_List" >
+<mapper namespace="com.liruilong.hros.mapper.EmployeeecMapper">
+    <resultMap id="BaseResultMap" type="com.liruilong.hros.model.Employeeec">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="eid" property="eid" jdbcType="INTEGER"/>
+        <result column="ecDate" property="ecdate" jdbcType="DATE"/>
+        <result column="ecReason" property="ecreason" jdbcType="VARCHAR"/>
+        <result column="ecPoint" property="ecpoint" jdbcType="INTEGER"/>
+        <result column="ecType" property="ectype" jdbcType="INTEGER"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="DataViewbean" type="com.liruilong.hros.model.datas.DataModels">
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="sum" property="sum" jdbcType="INTEGER"/>
+        <result column="sums" property="workage" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, eid, ecDate, ecReason, ecPoint, ecType, remark
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from employeeec
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from employeeec
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="getModelandView" resultMap="DataViewbean">
+        SELECT
+            employee.workID as name,
+            sum( rpiont ) as sum,
+            0 AS sums
+        FROM
+            employeeec ec,
+            rwards_punishments,
+            employee
+        WHERE
+            ec.ecType = rwards_punishments.id
+            AND employee.id = ec.eid
+        GROUP BY
+            eid
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from employeeec
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteEmpByEidc">
-    delete from employeeec
-    where id = #{id,jdbcType=INTEGER}
-    <if test="eid != null" >
-     and  eid = #{eid,jdbcType=INTEGER}
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.liruilong.hros.model.Employeeec" >
+    <delete id="deleteEmpByEidc">
+        delete from employeeec
+        where id = #{id,jdbcType=INTEGER}
+        <if test="eid != null">
+            and eid = #{eid,jdbcType=INTEGER}
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.liruilong.hros.model.Employeeec">
     insert into employeeec (id, eid, ecDate, 
       ecReason, ecPoint, ecType, 
       remark)
@@ -38,123 +60,123 @@
       #{ecreason,jdbcType=VARCHAR}, #{ecpoint,jdbcType=INTEGER}, #{ectype,jdbcType=INTEGER}, 
       #{remark,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelectives" parameterType="com.liruilong.hros.model.Employeeec" >
-    insert into employeeec
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="employeeec.eid != null" >
-        eid,
-      </if>
-      <if test="employeeec.ecdate != null" >
-        ecDate,
-      </if>
-      <if test="employeeec.ecreason != null" >
-        ecReason,
-      </if>
-      <if test="employeeec.ecpoint != null" >
-        ecPoint,
-      </if>
-        ecType,
-      <if test="employeeec.remark != null" >
-        remark,
-      </if>
-    </trim>
-    values
-    <foreach collection="ids"  separator="," item="id">
-      (
-      <if test="employeeec.eid != null">
-        #{employeeec.eid,jdbcType=INTEGER},
-      </if>
-      <if test="employeeec.ecdate != null">
-        #{employeeec.ecdate,jdbcType=DATE},
-      </if>
-      <if test="employeeec.ecreason != null">
-        #{employeeec.ecreason,jdbcType=VARCHAR},
-      </if>
-      <if test="employeeec.ecpoint != null">
-        #{employeeec.ecpoint,jdbcType=INTEGER},
-      </if>
-        #{id,jdbcType=INTEGER},
-      <if test="employeeec.remark != null">
-        #{employeeec.remark,jdbcType=VARCHAR}
-      </if>
-      )
-    </foreach>
+    <insert id="insertSelectives" parameterType="com.liruilong.hros.model.Employeeec">
+        insert into employeeec
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="employeeec.eid != null">
+                eid,
+            </if>
+            <if test="employeeec.ecdate != null">
+                ecDate,
+            </if>
+            <if test="employeeec.ecreason != null">
+                ecReason,
+            </if>
+            <if test="employeeec.ecpoint != null">
+                ecPoint,
+            </if>
+            ecType,
+            <if test="employeeec.remark != null">
+                remark,
+            </if>
+        </trim>
+        values
+        <foreach collection="ids" separator="," item="id">
+            (
+            <if test="employeeec.eid != null">
+                #{employeeec.eid,jdbcType=INTEGER},
+            </if>
+            <if test="employeeec.ecdate != null">
+                #{employeeec.ecdate,jdbcType=DATE},
+            </if>
+            <if test="employeeec.ecreason != null">
+                #{employeeec.ecreason,jdbcType=VARCHAR},
+            </if>
+            <if test="employeeec.ecpoint != null">
+                #{employeeec.ecpoint,jdbcType=INTEGER},
+            </if>
+            #{id,jdbcType=INTEGER},
+            <if test="employeeec.remark != null">
+                #{employeeec.remark,jdbcType=VARCHAR}
+            </if>
+            )
+        </foreach>
 
-  </insert>
-    <insert id="insertSelective">
-      insert into employeeec
-      <trim prefix="(" suffix=")" suffixOverrides="," >
-        <if test="id != null" >
-          id,
-        </if>
-        <if test="eid != null" >
-          eid,
-        </if>
-        <if test="ecdate != null" >
-          ecDate,
-        </if>
-        <if test="ecreason != null" >
-          ecReason,
-        </if>
-        <if test="ecpoint != null" >
-          ecPoint,
-        </if>
-        <if test="ectype != null" >
-          ecType,
-        </if>
-        <if test="remark != null" >
-          remark,
-        </if>
-      </trim>
-      <trim prefix="values (" suffix=")" suffixOverrides="," >
-        <if test="id != null" >
-          #{id,jdbcType=INTEGER},
-        </if>
-        <if test="eid != null" >
-          #{eid,jdbcType=INTEGER},
-        </if>
-        <if test="ecdate != null" >
-          #{ecdate,jdbcType=DATE},
-        </if>
-        <if test="ecreason != null" >
-          #{ecreason,jdbcType=VARCHAR},
-        </if>
-        <if test="ecpoint != null" >
-          #{ecpoint,jdbcType=INTEGER},
-        </if>
-        <if test="ectype != null" >
-          #{ectype,jdbcType=INTEGER},
-        </if>
-        <if test="remark != null" >
-          #{remark,jdbcType=VARCHAR},
-        </if>
-      </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.liruilong.hros.model.Employeeec" >
-    update employeeec
-    <set >
-      <if test="eid != null" >
-        eid = #{eid,jdbcType=INTEGER},
-      </if>
-      <if test="ecdate != null" >
-        ecDate = #{ecdate,jdbcType=DATE},
-      </if>
-      <if test="ecreason != null" >
-        ecReason = #{ecreason,jdbcType=VARCHAR},
-      </if>
-      <if test="ecpoint != null" >
-        ecPoint = #{ecpoint,jdbcType=INTEGER},
-      </if>
-      <if test="ectype != null" >
-        ecType = #{ectype,jdbcType=INTEGER},
-      </if>
-      <if test="remark != null" >
-        remark = #{remark,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.liruilong.hros.model.Employeeec" >
+    <insert id="insertSelective">
+        insert into employeeec
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="eid != null">
+                eid,
+            </if>
+            <if test="ecdate != null">
+                ecDate,
+            </if>
+            <if test="ecreason != null">
+                ecReason,
+            </if>
+            <if test="ecpoint != null">
+                ecPoint,
+            </if>
+            <if test="ectype != null">
+                ecType,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="eid != null">
+                #{eid,jdbcType=INTEGER},
+            </if>
+            <if test="ecdate != null">
+                #{ecdate,jdbcType=DATE},
+            </if>
+            <if test="ecreason != null">
+                #{ecreason,jdbcType=VARCHAR},
+            </if>
+            <if test="ecpoint != null">
+                #{ecpoint,jdbcType=INTEGER},
+            </if>
+            <if test="ectype != null">
+                #{ectype,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.liruilong.hros.model.Employeeec">
+        update employeeec
+        <set>
+            <if test="eid != null">
+                eid = #{eid,jdbcType=INTEGER},
+            </if>
+            <if test="ecdate != null">
+                ecDate = #{ecdate,jdbcType=DATE},
+            </if>
+            <if test="ecreason != null">
+                ecReason = #{ecreason,jdbcType=VARCHAR},
+            </if>
+            <if test="ecpoint != null">
+                ecPoint = #{ecpoint,jdbcType=INTEGER},
+            </if>
+            <if test="ectype != null">
+                ecType = #{ectype,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.liruilong.hros.model.Employeeec">
     update employeeec
     set eid = #{eid,jdbcType=INTEGER},
       ecDate = #{ecdate,jdbcType=DATE},

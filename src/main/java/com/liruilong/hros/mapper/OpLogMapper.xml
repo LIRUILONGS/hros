@@ -46,6 +46,11 @@
         </if>
         order by o.id desc limit #{page},#{size}
     </select>
+    <select id="getAllsOplogm" resultMap="BaseResultMap1">
+        select o.id, o.logtype, o.addDate, o.operate, o.hrname , l.id as lid, l.logtypemsg as llogtypemsg
+        FROM oplog o, logtype l  WHERE o.logtype=l.id
+        order by o.id desc limit 0,4
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from oplog
     where id = #{id,jdbcType=INTEGER}
