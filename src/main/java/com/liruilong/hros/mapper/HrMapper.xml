@@ -46,9 +46,13 @@
         AND  hr.name LIKE  concat('%',#{name,jdbcType=VARCHAR},'%')
         </if>
     </select>
+    <select id="getAllHrsExceptCurrentHr" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" /> from hr
+        WHERE hr.id != #{id,jdbcType=INTEGER}
+    </select>
 
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from hr
     where id = #{id,jdbcType=INTEGER}
   </delete>

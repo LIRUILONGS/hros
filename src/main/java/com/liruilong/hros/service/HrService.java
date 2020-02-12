@@ -11,9 +11,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.rmi.runtime.Log;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
+import java.util.logging.LoggingPermission;
 
 /**
  * @Description :
@@ -31,6 +35,7 @@ public class HrService implements UserDetailsService {
     @Autowired
     OplogService oplogService;
 
+    private static Logger Loggerlogger = Logger.getLogger("com.liruilong.hros.service.HrService");
 
     // 根据用户名加载user对象
     @Override
@@ -51,8 +56,9 @@ public class HrService implements UserDetailsService {
     @Transactional
     public boolean updateHrRole(Integer hrid, Integer[] rids) {
         oplogService.addOpLog(new OpLog((byte) 8,new Date(),"操作员角色更新", Hruitls.getCurrent().getName()));
+        Loggerlogger.warning("hrid:"+hrid + Arrays.toString(rids));
         int i = hrRoleMapper.deleteByHeId(hrid);
-        if (rids == null && rids.length == 0) {
+        if (rids == null || rids.length == 0) {
             return true;
         } else {
             return i >= 0 && hrRoleMapper.addHrRole(hrid, rids) == rids.length;
@@ -69,4 +75,7 @@ public class HrService implements UserDetailsService {
         return hrMapper.deleteByPrimaryKey(id);
     }
 
+    public List<Hr> getAllHrsExceptCurrentHr() {
+      return hrMapper.getAllHrsExceptCurrentHr(Hruitls.getCurrent().getId());
+    }
 }

@@ -16,18 +16,16 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * @Description : 权限处理,根据请求,分析需要的角色
+ * @Description : 权限处理,根据请求,分析需要的角色,该类的主要功能就是通过当前的请求地址，获取该地址需要的用户角色
  * @Author: Liruilong
  * @Date: 2019/12/24 12:17
  */
 @Component
 public class CustomFilterInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
-
     @Autowired
     MenuService menuService;
     //路径比较工具
     AntPathMatcher antPathMatcher = new AntPathMatcher();
-
     /**
      * @return java.util.Collection<org.springframework.security.access.ConfigAttribute>
      * @Author Liruilong
@@ -52,11 +50,9 @@ public class CustomFilterInvocationSecurityMetadataSource implements FilterInvoc
                 return SecurityConfig.createList(strings);
             }
         }
-        // 没匹配上登录可以访问
+        // 没匹配上的资源都是登录
         return SecurityConfig.createList("ROLE_LOGIN");
-
     }
-
     @Override
     public Collection<ConfigAttribute> getAllConfigAttributes() {
         return null;

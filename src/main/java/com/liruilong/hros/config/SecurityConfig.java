@@ -1,6 +1,7 @@
 package com.liruilong.hros.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.liruilong.hros.filter.VerifyCodeFilter;
 import com.liruilong.hros.model.Hr;
 import com.liruilong.hros.model.RespBean;
 import com.liruilong.hros.service.HrService;
@@ -19,8 +20,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import javax.servlet.ServletException;
@@ -43,35 +44,35 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     CustomFilterInvocationSecurityMetadataSource customFilterInvocationSecurityMetadataSource;
     @Autowired
     CustomUrlDecisionManager customUrlDecisionManager;
-
-
-    /**
-     * @return org.springframework.security.crypto.password.PasswordEncoder
-     * @Author Liruilong
-     * @Description 密码加盐
-     * @Date 22:50 2019/12/24
-     * @Param []
-     **/
-
+     @Autowired
+    VerifyCodeFilter verifyCodeFilter ;
+    @Autowired
+    MyAuthenticationFailureHandler myAuthenticationFailureHandler;
 
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(hrService);
     }
-
+    /**
+     * @Author Liruilong
+     * @Description  放行的请求路径
+     * @Date 19:25 2020/2/7
+     * @Param [web]
+     * @return void
+     **/
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/login","/css/**","/js/**", "/index.html", "/img/**", "/fonts/**","/favicon.ico");
+        web.ignoring().antMatchers("/auth/code","/login","/css/**","/js/**", "/index.html", "/img/**", "/fonts/**","/favicon.ico");
     }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http
+                .addFilterBefore(verifyCodeFilter, UsernamePasswordAuthenticationFilter.class)
+                .authorizeRequests()
                 //.anyRequest().authenticated()
                 .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
                     @Override
@@ -81,18 +82,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         return object;
                     }
                 })
-                .and()
-                .formLogin()
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .loginProcessingUrl("/doLogin")
+                .and().formLogin().usernameParameter("username").passwordParameter("password") .loginProcessingUrl("/doLogin")
                 .loginPage("/login")
                 //登录成功回调
                 .successHandler(new AuthenticationSuccessHandler() {
                     @Override
-                    public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
-                                                        HttpServletResponse httpServletResponse,
-                                                        Authentication authentication) throws IOException, ServletException {
+                    public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
                         httpServletResponse.setContentType("application/json;charset=utf-8");
                         PrintWriter out = httpServletResponse.getWriter();
                         Hr hr = (Hr) authentication.getPrincipal();
@@ -104,35 +99,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         out.write(s);
                         out.flush();
                         out.close();
-
                     }
                 })
                 //登失败回调
-                .failureHandler(new AuthenticationFailureHandler() {
-                    @Override
-                    public void onAuthenticationFailure(HttpServletRequest httpServletRequest,
-                                                        HttpServletResponse httpServletResponse,
-                                                        AuthenticationException e) throws IOException, ServletException {
-                        httpServletResponse.setContentType("application/json;charset=utf-8");
-                        PrintWriter out = httpServletResponse.getWriter();
-                        RespBean respBean = RespBean.error("登录失败!");
-                        if (e instanceof LockedException) {
-                            respBean.setMsg("账户被锁定请联系管理员!");
-                        } else if (e instanceof CredentialsExpiredException) {
-                            respBean.setMsg("密码过期请联系管理员!");
-                        } else if (e instanceof AccountExpiredException) {
-                            respBean.setMsg("账户过期请联系管理员!");
-                        } else if (e instanceof DisabledException) {
-                            respBean.setMsg("账户被禁用请联系管理员!");
-                        } else if (e instanceof BadCredentialsException) {
-                            respBean.setMsg("用户名密码输入错误,请重新输入!");
-                        }
-                        //将hr转化为Sting
-                        out.write(new ObjectMapper().writeValueAsString(respBean));
-                        out.flush();
-                        out.close();
-                    }
-                })
+                .failureHandler(myAuthenticationFailureHandler)
                 //相关的接口直接返回
                 .permitAll()
                 .and()

@@ -44,4 +44,5 @@ public interface HrMapper {
     List<Hr> getAllHRs(@Param("id") Integer id, @Param("name") String name);
 
 
+    List<Hr>  getAllHrsExceptCurrentHr(Integer id);
 }
