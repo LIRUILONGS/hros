@@ -37,7 +37,7 @@
         select
         <include refid="Base_Column_List"/>,
         <include refid="Blob_Column_List"/>
-        from main_notice order by id desc limit 0,50
+        from main_notice order by id desc limit 0,20
     </select>
     <select id="gettotal" resultType="java.lang.Long">
         select
