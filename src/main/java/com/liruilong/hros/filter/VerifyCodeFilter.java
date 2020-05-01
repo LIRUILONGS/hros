@@ -6,7 +6,9 @@ import com.liruilong.hros.config.MyAuthenticationFailureHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -15,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
 
 
 /**
@@ -32,7 +35,7 @@ public class VerifyCodeFilter extends OncePerRequestFilter {
     @Autowired
     MyAuthenticationFailureHandler myAuthenticationFailureHandler;
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, AccessDeniedException,IOException {
 
         if (StringUtils.equals("/doLogin", request.getRequestURI())
                 && StringUtils.equalsIgnoreCase(request.getMethod(), "post")) {
@@ -42,7 +45,8 @@ public class VerifyCodeFilter extends OncePerRequestFilter {
                 if (requestCaptcha == null) {
                     throw new ValidateCodeException("验证码不存在");
                 }
-            String code = (String) request.getSession().getAttribute("yanzhengma");
+            String code = (String) request.getSession().getAttribute("code");
+                logger.warn("开始校验验证码，生成的验证码为：" + code + " ，输入的验证码为：" + requestCaptcha);
                 if (StringUtils.isBlank(code)) {
                     throw new ValidateCodeException("验证码过期！");
                 }
@@ -58,7 +62,7 @@ public class VerifyCodeFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
             }
         } else {
-            filterChain.doFilter(request, response);
+                filterChain.doFilter(request, response);
         }
 
 

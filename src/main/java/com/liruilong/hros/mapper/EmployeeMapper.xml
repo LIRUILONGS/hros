@@ -860,6 +860,9 @@
         </if>
         order by e.workID DESC
     </select>
+    <select id="getEmployeeAll" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM employee  order by id desc
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from employee

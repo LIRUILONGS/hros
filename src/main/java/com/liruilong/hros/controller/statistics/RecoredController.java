@@ -36,9 +36,7 @@ public class RecoredController {
     @GetMapping("/department")
       public List<DataModelT> dataViewDepartment(){
           return   dataModelTService.dataViewDepartment();
-
       }
-
     /**
      * @Author Liruilong
      * @Description 职位入职统计，离职统计 离职工龄 离职率
@@ -46,13 +44,10 @@ public class RecoredController {
      * @Param []
      * @return java.util.List<com.liruilong.hros.model.datas.DataModelT>
      **/
-
       @GetMapping("/workAge")
     public List<DataModelT> dataViewWorkAge(){
         return dataModelTService.dataViewWorkAge();
       }
-
-
       /**
        * @Author Liruilong
        * @Description 职称入职统计，离职统计 离职工龄 离职率
@@ -60,7 +55,6 @@ public class RecoredController {
        * @Param []
        * @return java.util.List<com.liruilong.hros.model.datas.DataModelT>
        **/
-
     @GetMapping("/JobLevel")
     public List<DataModelT> DataViewJobLevelT(){
         return dataModelTService.dataViewJobLevelT();

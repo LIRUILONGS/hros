@@ -47,7 +47,7 @@ public class MenuService {
     /**
      * @return java.util.List<com.liruilong.hros.model.Menu>
      * @Author Liruilong
-     * @Description 根据请求地址获取角色权限菜单
+     * @Description 获取所有权限菜单, springSecurity鑒權處理
      * @Date 17:48 2019/12/24
      * @Param []
      **/
@@ -59,7 +59,7 @@ public class MenuService {
     /**
      * @return java.util.List<com.liruilong.hros.model.Menu>
      * @Author Liruilong
-     * @Description 菜单数据初始化
+     * @Description 菜单数据初始化，系統設置裏的系統菜單處理。
      * @Date 21:13 2019/12/26
      * @Param []
      **/

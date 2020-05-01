@@ -1,4 +1,4 @@
-package com.liruilong.hros.controller;
+package com.liruilong.hros.controller.systems;
 
 import com.liruilong.hros.model.Menu;
 import com.liruilong.hros.service.MenuService;
@@ -19,6 +19,14 @@ import java.util.List;
 public class SystemConfigController {
     @Autowired
     MenuService menuService;
+
+    /**
+     * @Author Liruilong
+     * @Description  系統菜單加載
+     * @Date 16:13 2020/2/14
+     * @Param []
+     * @return java.util.List<com.liruilong.hros.model.Menu>
+     **/
 
     @GetMapping("/menu")
     public List<Menu> getMenusByHrId(){

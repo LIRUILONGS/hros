@@ -28,14 +28,14 @@ public class GlobalExceptionHandler {
         }
         return RespBean.error("数据库异常,操作失败");
     }
-    @ExceptionHandler(IllegalStateException.class)
+/*    @ExceptionHandler(IllegalStateException.class)
     public void ValidateCodeException(IllegalStateException e) {
 
         logger.warning("Cannot call sendError() after the response has been committed " +"异常");
 
     }
     @ExceptionHandler(NullPointerException.class)
-    public void ValidateCodeException(NullPointerException e) {
-        logger.warning("null" +"异常");
-    }
+    public RespBean ValidateCodeException(NullPointerException e) {
+        return RespBean.error("系统错误提示:空指针异常");
+    }*/
 }

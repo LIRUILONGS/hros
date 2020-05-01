@@ -85,4 +85,6 @@ public interface EmployeeMapper {
     List<Employee> getAllsEmpadvanced(@Param("page") Integer page, @Param("size") Integer size, @Param("emp") Employee employee, @Param("beginDateScope") Date[] beginDateScope);
 
     Long getTotalE(@Param("emp") Employee employee, @Param("beginDateScope") Date[] beginDateScope);
+
+    List<Employee>  getEmployeeAll();
 }

@@ -30,6 +30,14 @@ public class PermissController {
     public List<Role> getAllRoles() {
         return roleService.getAllRoles();
     }
+    /**
+     * @Author Liruilong
+     * @Description  系統設置裏的菜單處理
+     * @Date 16:17 2020/2/14
+     * @Param []
+     * @return java.util.List<com.liruilong.hros.model.Menu>
+     **/
+
     @GetMapping("/menus")
     public List<Menu> getAllMenus() {
         return menuService.getAllMenus();

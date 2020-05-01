@@ -1,4 +1,4 @@
-package com.liruilong.hros.controller;
+package com.liruilong.hros.controller.publics;
 
 import com.liruilong.hros.model.MainNorice;
 import com.liruilong.hros.model.OpLog;

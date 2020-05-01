@@ -1,4 +1,4 @@
-package com.liruilong.hros.controller;
+package com.liruilong.hros.controller.systems;
 
 import com.liruilong.hros.model.RespBean;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 @RestController
 public class LoginController {
 
-    private static Logger Loggerlogger = Logger.getLogger("com.liruilong.hros.controller.LoginController");
+    private static Logger Loggerlogger = Logger.getLogger("com.liruilong.hros.controller.systems.LoginController");
 
     @GetMapping("/login")
     public RespBean login(){
@@ -42,6 +42,7 @@ public class LoginController {
 
         }};
         request.getSession().setAttribute("yanzhengma",result+"");
+        Loggerlogger.warning("校验码为："+result);
         return imgResult;
     }
 }

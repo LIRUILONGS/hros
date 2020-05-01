@@ -5,6 +5,7 @@ import com.liruilong.hros.model.*;
 import com.liruilong.hros.model.datas.DataModel;
 import com.liruilong.hros.model.datas.DataModelT;
 import com.liruilong.hros.model.datas.DataModels;
+import com.liruilong.hros.service.utils.EmailUtils;
 import com.liruilong.hros.service.utils.Hruitls;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,7 +72,9 @@ public class EmployeeService {
         double month = (Double.parseDouble(yearFormat.format(endContract)) - Double.parseDouble(yearFormat.format(beginContract))) * 12 + (Double.parseDouble(monthFormat.format(endContract)) - Double.parseDouble(monthFormat.format(beginContract)));
         employee.setContractterm(Double.parseDouble(decimalFormat.format(month / 12)));
         int result = employeeMapper.insertSelective(employee);
-        oplogService.addOpLog(new OpLog((byte) 2, new Date(), "员工入职::name:" + employee.getName() + "---workId:" + employee.getWorkid(), Hruitls.getCurrent().getName()));
+        oplogService.addOpLog(new OpLog((byte) 2, new Date(), "员工入职::name:" + employee.getName() + "workId:" + employee.getWorkid(), Hruitls.getCurrent().getName()));
+        EmailUtils.sendEmail(new EmailModel(employee, "人事管理系统测试##员工入职","emailpy.py"));
+//        mailReceiver.handler(employee);
         return result;
     }
 
@@ -85,6 +88,7 @@ public class EmployeeService {
         employee.setId(null);
         employeeRecycleService.addEmployeeRecycle(employee);
         oplogService.addOpLog(new OpLog((byte) 9, new Date(), "员工离职:name:" + employee.getName() + "---workId:" + employee.getWorkid(), Hruitls.getCurrent().getName()));
+        EmailUtils.sendEmail(new EmailModel(employee, "人事管理系统测试##员工离职","emailpyout.py"));
         return employeeMapper.deleteByPrimaryKey(id);
     }
 

@@ -112,4 +112,21 @@ public class Menu {
     public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
+
+    @Override
+    public String toString() {
+        return "Menu{" +
+                "id=" + id +
+                ", url='" + url + '\'' +
+                ", path='" + path + '\'' +
+                ", component='" + component + '\'' +
+                ", name='" + name + '\'' +
+                ", iconcls='" + iconcls + '\'' +
+                ", meta=" + meta +
+                ", parentid=" + parentid +
+                ", enabled=" + enabled +
+                ", children=" + children +
+                ", roles=" + roles +
+                '}';
+    }
 }
