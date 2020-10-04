@@ -45,7 +45,7 @@ public class VerifyCodeFilter extends OncePerRequestFilter {
                 if (requestCaptcha == null) {
                     throw new ValidateCodeException("验证码不存在");
                 }
-            String code = (String) request.getSession().getAttribute("code");
+            String code = (String) request.getSession().getAttribute("yanzhengma");
                 logger.warn("开始校验验证码，生成的验证码为：" + code + " ，输入的验证码为：" + requestCaptcha);
                 if (StringUtils.isBlank(code)) {
                     throw new ValidateCodeException("验证码过期！");

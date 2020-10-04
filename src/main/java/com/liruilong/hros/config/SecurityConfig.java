@@ -48,8 +48,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     VerifyCodeFilter verifyCodeFilter ;
     @Autowired
     MyAuthenticationFailureHandler myAuthenticationFailureHandler;
-    @Autowired
-    MyAccessDeniedHandler myAccessDeniedHandler;
 
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -66,6 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * @Param [web]
      * @return void
      **/
+
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/auth/code","/login","/css/**","/js/**", "/index.html", "/img/**", "/fonts/**","/favicon.ico");
@@ -125,7 +124,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 })
                 .permitAll()
                 .and()
-                .csrf().disable().exceptionHandling().accessDeniedHandler(myAccessDeniedHandler)
+                .csrf().disable().exceptionHandling()
                 //没有认证时，在这里处理结果，不要重定向
                 .authenticationEntryPoint(new AuthenticationEntryPoint() {
                     @Override

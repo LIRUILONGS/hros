@@ -4,6 +4,7 @@ import com.liruilong.hros.model.datas.DataModelT;
 
 import com.liruilong.hros.service.DataModelTService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +33,7 @@ public class RecoredController {
      * @Param []
      * @return java.util.List<com.liruilong.hros.model.datas.DataModelT>
      **/
-
+    @Scheduled(cron = "0 0 3 * * ?")
     @GetMapping("/department")
       public List<DataModelT> dataViewDepartment(){
           return   dataModelTService.dataViewDepartment();
@@ -44,6 +45,7 @@ public class RecoredController {
      * @Param []
      * @return java.util.List<com.liruilong.hros.model.datas.DataModelT>
      **/
+     @Scheduled(cron = "0 0 3 * * ?")
       @GetMapping("/workAge")
     public List<DataModelT> dataViewWorkAge(){
         return dataModelTService.dataViewWorkAge();
@@ -56,6 +58,7 @@ public class RecoredController {
        * @return java.util.List<com.liruilong.hros.model.datas.DataModelT>
        **/
     @GetMapping("/JobLevel")
+    @Scheduled(cron = "0 0 3 * * ?")
     public List<DataModelT> DataViewJobLevelT(){
         return dataModelTService.dataViewJobLevelT();
     }
@@ -70,6 +73,7 @@ public class RecoredController {
 
 
     @GetMapping("/Department")
+    @Scheduled(cron = "0 0 3 * * ?")
     public List<DataModelT> DataViewDepartment(){
         return dataModelTService.dataViewDepartment();
     }
