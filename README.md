@@ -7,7 +7,7 @@
 nohup java -jar hros-1.2.1-SNAPSHOT.jar &
 tail -f nohup.out
 ```
-+ 邮件服务那块我用脚本写的，后来已经注释掉了，如果需要邮件服务，还需要python环境，调整代码。
++ 环境只用到了jdk和mysql ，发送邮件那块我用脚本写的，后来已经注释掉了，如果需要发送邮件，还需要python环境，调整代码。
 ### [项目演示地址](http://39.97.241.18:8082/index.html) 嗯，服务器快到期了，后期可能看不了啦
 ### 最后，`对小伙伴有帮助的话给个star ^_^ 生活加油！。`
 
@@ -89,42 +89,6 @@ B/S架构是对C/S架构的一种改进,软件应用的业务逻辑完全由服�
 ### 人事记录统计
 人事记录统计主要对员工离职信息的统计,以部门.职称.职位为维度,对员工离职率,离职工龄,离职年龄进行分析.以柱状图结合折线图的方式统计.
 ![](./img/14.png) 
-图16 人事记录统计
-	部分代码:
-```java
-public List<DataModel> dataViewschool() {
-    List<Employee> employeeList = employeeMapper.selectByPrimaryKey();
-    Map<String, Integer> map = new HashMap<>();
-    List<DataModel> dataModels = new ArrayList<>();
-    employeeList.stream().forEach(o -> {
-        if (!map.containsKey(o.getSchool())) {
-            map.put(o.getSchool(), 1);
-        } else {
-            map.put(o.getSchool(), map.get(o.getSchool()) + 1);
-        }
-    });
-    map.forEach((o1, o2) -> { dataModels.add(new DataModel(o1, o2));
-    });
-    return dataModels;
-}
-public List<DataModelT> dataViewWorkAge() {
-    List<DataModelT> dataModelTS = new ArrayList<>();
-    dataViewPosition().stream().forEach(o -> {
-        dataModelTS.add(new DataModelT(o.getSum(), o.getName()));
-    });
-    List<EmployeeRecycle> employeeRecycleList = employeeRecycleService.getAllEmployeeRecycle();
-    employeeRecycleService.dataViewPosition().stream()
-            .forEach(o -> { dataModelTS.stream()
-                        .filter(o1 -> o.getName().equals(o1.getName()))
-                        .forEach(o1 -> {
-                            o1.setDimission(o.getSum());
-                            o1.setSum(o.getWorkage());
-                            o1.setaDouble((double) Math.round((o.getSum() / new Double(employeeRecycleList.size())) * 100) / 100);
-                        });
-            });
-    return dataModelTS;
-}
-```
 ## 系统管理
 ### 基础信息设置
 系统管理主要对系统,管理员等一些操作,包括基础设置,系统管理,操作员管理,授权处理.基础信息设置主要对部门,职位,职称,奖惩规则和权限组的设置增删查改功能管理,实现部门树,权限树预览.职称等级设置.奖惩描述自定义及使用模糊提示等.
