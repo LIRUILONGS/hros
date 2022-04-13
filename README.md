@@ -6,7 +6,7 @@
 + 如果想部署的小伙伴可以直接部署，只需要jdk，mysql环境就可以
 + CSDN :[https://liruilong.blog.csdn.net/](https://liruilong.blog.csdn.net/)
 + 个人博客：[https://liruilongs.github.io/](https://liruilongs.github.io/)
-![https://liruilongs.github.io/img/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7.jpg](https://liruilongs.github.io/img/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7.jpg) 
+
 ```bash
 nohup java -jar hros-1.2.1-SNAPSHOT.jar &
 tail -f nohup.out
