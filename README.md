@@ -6,7 +6,7 @@
 + 如果想部署的小伙伴可以直接部署，只需要jdk，mysql环境就可以
 + CSDN :[https://liruilong.blog.csdn.net/](https://liruilong.blog.csdn.net/)
 + 个人博客：[https://liruilongs.github.io/](https://liruilongs.github.io/)
-+ 
+![https://liruilongs.github.io/img/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7.jpg](https://liruilongs.github.io/img/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7.jpg) 
 ```bash
 nohup java -jar hros-1.2.1-SNAPSHOT.jar &
 tail -f nohup.out
@@ -32,7 +32,7 @@ tail -f nohup.out
 + `axios`是基于Promise 用于浏览器和 node.js 的 HTTP 客户端的异步编程解决方案,可以从浏览器中创建XMLHttpRequests,从node.js中创建http请求,支持Promise API,拦截请求和响应,转换请求数据和响应数据,客户端支持防御XSRF等[7] .
 + `vue-router`在项目中用于前端动态加载路由管理.SPA应用来讲,其实就是在前后端分离的基础上,加一层前端路由,即是由前端来维护路由规则,实现有两种,一种是利用url的hash,另一种就是HTML5的History模式[8] .这里我们使用vu实体属性outer的hash方式.
 + `B/S`架构是对C/S架构的一种改进,软件应用的业务逻辑完全由服务端实现,依托于浏览器,相对于C/S更轻量,用户体验要差一些,但是基于B/S的SPA和AJAX技术完美的解决了这个问题[9].
-![https://liruilongs.github.io/img/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7.jpg](https://liruilongs.github.io/img/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7.jpg)
+
 ## 项目实现
 用户登录访问后由Spring Security的WebSecurityConfigurerAdapter类实现认证和授权校验.登录成功后跳转主页,之后的每一次访问都会通过校验用户,角色,基于Ant格式的URL权限的匹配.
 
