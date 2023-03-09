@@ -7,6 +7,11 @@
 + CSDN :[https://liruilong.blog.csdn.net/](https://liruilong.blog.csdn.net/)
 + 个人博客：[https://liruilongs.github.io/](https://liruilongs.github.io/)
 
+---
+
+**注意： 如果安装高版本的数据库需要替换高版本的驱动，项目中如果不使用 redis和mq需要把 对应的 pom 文件中的自动装配依赖去掉，如果做邮件测试，一定要改邮箱，每年的三四月份总会收到一堆的入职邮件....**
+
+----
 ```bash
 nohup java -jar hros-1.2.1-SNAPSHOT.jar &
 tail -f nohup.out
