@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * @Author Liruilong
+ * @Author liruilong
  * @Description
  * @Date 17:21 2019/12/26
  * @Param
@@ -26,34 +26,38 @@ public class PermissController {
     RoleService roleService;
     @Autowired
     MenuService menuService;
+
     @GetMapping("/")
     public List<Role> getAllRoles() {
         return roleService.getAllRoles();
     }
+
     /**
-     * @Author Liruilong
-     * @Description  系統設置裏的菜單處理
+     * @return java.util.List<Menu>
+     * @Author liruilong
+     * @Description 系統設置裏的菜單處理
      * @Date 16:17 2020/2/14
      * @Param []
-     * @return java.util.List<com.liruilong.hros.model.Menu>
      **/
 
     @GetMapping("/menus")
     public List<Menu> getAllMenus() {
         return menuService.getAllMenus();
     }
-   @GetMapping("/mids/{rid}")
-   private List<Integer> getMidsByRid( @PathVariable Integer rid){
+
+    @GetMapping("/mids/{rid}")
+    private List<Integer> getMidsByRid(@PathVariable Integer rid) {
         return menuService.getMidsByRid(rid);
-   }
-   @PutMapping("/")
-   public RespBean updateMenuRole(Integer rid, Integer[] mids){
-         if (menuService.updateMenuRole(rid,mids)){
-             return RespBean.ok("更新成功");
-         }else {
-             return RespBean.error("更新失败");
-         }
-   }
+    }
+
+    @PutMapping("/")
+    public RespBean updateMenuRole(Integer rid, Integer[] mids) {
+        if (menuService.updateMenuRole(rid, mids)) {
+            return RespBean.ok("更新成功");
+        } else {
+            return RespBean.error("更新失败");
+        }
+    }
 
     @PostMapping("/role")
     public RespBean addRole(@RequestBody Role role) {

@@ -18,5 +18,8 @@ public interface EmployeetrainMapper {
 
     Integer deleteByEmployeetrain(@Param("eid") Integer eid, @Param("id") Integer id);
 
-    Integer  addEmploteetByPge(@Param("emp") Employeetrain employeetrain,@Param("ids") Integer[] ids);
+    Integer deleteByEmploy(@Param("eid") Integer eid);
+
+
+    Integer addEmploteetByPge(@Param("emp") Employeetrain employeetrain, @Param("ids") Integer[] ids);
 }

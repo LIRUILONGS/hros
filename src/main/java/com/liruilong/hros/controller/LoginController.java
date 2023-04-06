@@ -1,24 +1,24 @@
 package com.liruilong.hros.controller;
 
 import com.liruilong.hros.model.RespBean;
+import com.wf.captcha.ArithmeticCaptcha;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.wf.captcha.ArithmeticCaptcha;
+
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
 /**
  * @Description :
- * @Author: Liruilong
+
  * @Date: 2019/12/19 19:58
  */
 @RestController
 public class LoginController {
 
-    private static Logger Loggerlogger = Logger.getLogger("com.liruilong.hros.controller.LoginController");
+    private static Logger Loggerlogger = Logger.getLogger("LoginController");
 
     @GetMapping("/login")
     public RespBean login(){

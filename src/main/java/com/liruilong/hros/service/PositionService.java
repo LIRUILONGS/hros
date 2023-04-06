@@ -10,9 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
- * @Author Liruilong
+ * @Author liruilong
  * @Description
  * @Date 15:05 2019/12/25
  * @Param
@@ -28,14 +30,20 @@ public class PositionService {
     OplogService oplogService;
 
     public List<Position> getAllPositions() {
-        return positionMapper.getAllPositions();
+        List<Position> allPositions = positionMapper.getAllPositions();
+        return allPositions.stream().filter(Objects::nonNull).filter(Position::getEnabled).collect(Collectors.toList());
+    }
+
+    public List<Position> getRealAllPositions() {
+        List<Position> allPositions = positionMapper.getAllPositions();
+        return allPositions;
     }
 
     public Integer addPosition(Position position) {
         // 设置默认值
         position.setEnabled(true);
         position.setCreatedate(new Date());
-        oplogService.addOpLog(new OpLog((byte) 1,new Date(),"添加职位: " + position.getName(), Hruitls.getCurrent().getName()));
+        oplogService.addOpLog(new OpLog((byte) 1, new Date(), "添加职位: " + position.getName(), Hruitls.getCurrent().getName()));
         return positionMapper.insertSelective(position);
     }
 

@@ -1,6 +1,8 @@
 package com.liruilong.hros.service;
 
 
+import com.liruilong.hros.mapper.HrRoleMapper;
+import com.liruilong.hros.mapper.MenuRoleMapper;
 import com.liruilong.hros.mapper.RoleMapper;
 import com.liruilong.hros.model.OpLog;
 import com.liruilong.hros.model.Role;
@@ -13,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @Author Liruilong
+ * @Author liruilong
  * @Description
  * @Date 17:37 2019/12/26
  * @Param
@@ -26,14 +28,19 @@ public class RoleService {
     RoleMapper roleMapper;
     @Autowired
     OplogService oplogService;
+    @Autowired
+    HrRoleMapper hrRoleMapper;
+
+    @Autowired
+    MenuRoleMapper menuRoleMapper;
 
 
     /**
-     * @Author Liruilong
-     * @Description  数据初始化
+     * @return java.util.List<Role>
+     * @Author liruilong
+     * @Description 数据初始化
      * @Date 20:42 2019/12/26
      * @Param []
-     * @return java.util.List<com.liruilong.hros.model.Role>
      **/
 
     public List<Role> getAllRoles() {
@@ -41,8 +48,8 @@ public class RoleService {
     }
 
     /**
-     * @Author Liruilong
-     * @Description  添加角色权限
+     * @Author liruilong
+     * @Description 添加角色权限
      * @Date 20:42 2019/12/26
      * @Param [role]
      * @return java.lang.Integer
@@ -57,7 +64,7 @@ public class RoleService {
     }
 
     /**
-     * @Author Liruilong
+     * @Author liruilong
      * @Description 删除角色
      * @Date 20:43 2019/12/26
      * @Param [rid]
@@ -65,8 +72,9 @@ public class RoleService {
      **/
 
     public Integer deleteRoleById(Integer rid) {
-        oplogService.addOpLog(new OpLog((byte) 1,new Date(),"删除奖惩: id = " + rid, Hruitls.getCurrent().getName()));
-
+        oplogService.addOpLog(new OpLog((byte) 1, new Date(), "删除角色: id = " + rid, Hruitls.getCurrent().getName()));
+        menuRoleMapper.deleteByRid(rid);
+        hrRoleMapper.deleteByRoleId(rid);
         return roleMapper.deleteByPrimaryKey(rid);
     }
 }

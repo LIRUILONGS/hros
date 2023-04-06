@@ -89,15 +89,15 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
     <insert id="insert" parameterType="com.liruilong.hros.model.Menu">
-    insert into menu (id, url, path, 
-      component, name, iconCls, 
-      keepAlive, requireAuth, parentId, 
-      enabled)
-    values (#{id,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
-      #{component,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{iconcls,jdbcType=VARCHAR}, 
-      #{keepalive,jdbcType=BIT}, #{requireauth,jdbcType=BIT}, #{parentid,jdbcType=INTEGER}, 
-      #{enabled,jdbcType=BIT})
-  </insert>
+        insert into menu (id, url, path,
+                          component, name, iconCls,
+                          keepAlive, requireAuth, parentId,
+                          enabled)
+        values (#{id,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR},
+                #{component,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{iconcls,jdbcType=VARCHAR},
+                #{keepalive,jdbcType=BIT}, #{requireauth,jdbcType=BIT}, #{parentid,jdbcType=INTEGER},
+                #{enabled,jdbcType=BIT})
+    </insert>
     <insert id="insertSelective" parameterType="com.liruilong.hros.model.Menu">
         insert into menu
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -199,16 +199,16 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.liruilong.hros.model.Menu">
-    update menu
-    set url = #{url,jdbcType=VARCHAR},
-      path = #{path,jdbcType=VARCHAR},
-      component = #{component,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
-      iconCls = #{iconcls,jdbcType=VARCHAR},
-      keepAlive = #{keepalive,jdbcType=BIT},
-      requireAuth = #{requireauth,jdbcType=BIT},
-      parentId = #{parentid,jdbcType=INTEGER},
-      enabled = #{enabled,jdbcType=BIT}
+        update menu
+        set url         = #{url,jdbcType=VARCHAR},
+            path        = #{path,jdbcType=VARCHAR},
+            component   = #{component,jdbcType=VARCHAR},
+            name        = #{name,jdbcType=VARCHAR},
+            iconCls     = #{iconcls,jdbcType=VARCHAR},
+            keepAlive   = #{keepalive,jdbcType=BIT},
+            requireAuth = #{requireauth,jdbcType=BIT},
+            parentId    = #{parentid,jdbcType=INTEGER},
+            enabled     = #{enabled,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -2,24 +2,22 @@ package com.liruilong.hros.service;
 
 import com.liruilong.hros.mapper.EmployeeMapper;
 import com.liruilong.hros.mapper.MainNoriceMapper;
-import com.liruilong.hros.model.*;
-import com.liruilong.hros.service.utils.EmailUtils;
+import com.liruilong.hros.model.MainNorice;
+import com.liruilong.hros.model.OpLog;
+import com.liruilong.hros.model.RespPageBean;
 import com.liruilong.hros.service.utils.Hruitls;
-import com.liruilong.hros.service.utils.ThreadUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @Description :
- * @Author: Liruilong
+
  * @Date: 2020/1/3 10:02
  */
 

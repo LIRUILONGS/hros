@@ -2,13 +2,14 @@ package com.liruilong.hros.service.utils;
 
 import com.liruilong.hros.model.EmailModel;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Description :线程池工具类
- * @Author: Liruilong
+
  * @Date: 2020/2/19 12:29
  */
 public class ThreadUtils {
@@ -22,22 +23,24 @@ public class ThreadUtils {
     public static Thread getThtead(EmailModel emailModel) {
         return new Thread(() -> EmailUtils.sendGEmail(emailModel));
     }
+
     /**
-     * @Author Liruilong
+     * @return void
+     * @Author liruilong
      * @Description 构造一个有缓冲功能的线程池
      * @Date 18:14 2020/2/19
      * @Param [thread]
-     * @return void
      **/
     public static void getCachedThreadPool(Thread thread) {
        Executors.newCachedThreadPool().execute(thread);
     }
+
     /**
-     * @Author Liruilong 
+     * @return void
+     * @Author liruilong
      * @Description 构造一个固定线程数目的线程池
      * @Date 18:21 2020/2/19
-     * @Param [thread] 
-     * @return void 
+     * @Param [thread]
      **/
     public static void getFixedThreadPool(Thread thread,Integer size){
         Executors.newFixedThreadPool(size).execute(thread);

@@ -2,14 +2,13 @@ package com.liruilong.hros.service;
 
 import com.liruilong.hros.mapper.AppraiseMapper;
 import com.liruilong.hros.model.Appraise;
-import com.liruilong.hros.model.Employeetrain;
 import com.liruilong.hros.service.utils.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
  * @Description :
- * @Author: Liruilong
+
  * @Date: 2020/1/13 17:22
  */
 @Service
@@ -23,7 +22,9 @@ public class AppraiseService {
 
     public Integer addAppraise(Appraise appraise) {
         oplogService.addOpLog(LogUtils.addLog((byte) 10,"添加员工考评eid:" + appraise.getEid()));
-        return appraiseMapper.insertSelective(appraise);
+        int i = appraiseMapper.insertSelective(appraise);
+
+        return i;
     }
 
     public Integer deleteAppraise(Integer eid, Integer id) {

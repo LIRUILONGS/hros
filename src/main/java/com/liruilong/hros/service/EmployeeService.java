@@ -1,16 +1,17 @@
 package com.liruilong.hros.service;
 
-import com.liruilong.hros.mapper.EmployeeMapper;
+import com.liruilong.hros.mapper.*;
 import com.liruilong.hros.model.*;
 import com.liruilong.hros.model.datas.DataModel;
 import com.liruilong.hros.model.datas.DataModelT;
 import com.liruilong.hros.model.datas.DataModels;
 import com.liruilong.hros.service.utils.EmailUtils;
 import com.liruilong.hros.service.utils.Hruitls;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DecimalFormat;
@@ -19,7 +20,7 @@ import java.util.*;
 
 /**
  * @Description :
- * @Author: Liruilong
+
  * @Date: 2019/12/31 11:27
  */
 @Service
@@ -33,6 +34,31 @@ public class EmployeeService {
     @Autowired
     EmployeeRecycleService employeeRecycleService;
 
+    @Autowired
+    EmployeeremoveMapper employeeremoveMapper;
+
+    //    employeetrain
+    @Autowired
+    EmployeetrainMapper employeetrainMapper;
+
+    @Autowired
+    EmpSalaryMapper empSalaryMapper;
+
+    @Autowired
+    AppraiseMapper appraiseMapper;
+
+    @Autowired
+    EmployeeecMapper employeeecMapper;
+
+    @Autowired
+    HrMapper hrMapper;
+
+    @Autowired
+    HrRoleMapper hrRoleMapper;
+
+    @Autowired
+    RoleMapper roleMapper;
+
     /*  运行的这个类时的日志打印*/
     public final static Logger logger = LoggerFactory.getLogger(EmployeeService.class);
     SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
@@ -40,8 +66,8 @@ public class EmployeeService {
     DecimalFormat decimalFormat = new DecimalFormat("##.00");
 
     /**
-     * @return com.liruilong.hros.model.RespPageBean
-     * @Author Liruilong
+     * @return RespPageBean
+     * @Author liruilong
      * @Description page 为显示的页数，size为每页显示的页数
      * @Date 11:34 2019/12/31
      * @Param [page, size]
@@ -66,12 +92,42 @@ public class EmployeeService {
         return new RespPageBean(total, data);
     }
 
+    @Transactional
     public Integer addEmp(Employee employee) {
         Date beginContract = employee.getBegincontract();
         Date endContract = employee.getEndcontract();
         double month = (Double.parseDouble(yearFormat.format(endContract)) - Double.parseDouble(yearFormat.format(beginContract))) * 12 + (Double.parseDouble(monthFormat.format(endContract)) - Double.parseDouble(monthFormat.format(beginContract)));
         employee.setContractterm(Double.parseDouble(decimalFormat.format(month / 12)));
         int result = employeeMapper.insertSelective(employee);
+        Employee employeeByName = employeeMapper.getEmployeeByName(employee.getName());
+        if (employeeByName == null){
+            throw new RuntimeException("新增员工失败");
+        }
+        Hr hr = new Hr();
+        if (StringUtils.isNoneBlank(employeeByName.getAddress())){
+            hr.setAddress(employeeByName.getAddress());
+        }
+        if (StringUtils.isNoneBlank(employeeByName.getName())){
+            hr.setName(employeeByName.getName());
+            hr.setUsername(employeeByName.getName());
+        }
+        if (StringUtils.isNoneBlank(employeeByName.getPhone())){
+            hr.setPhone(employeeByName.getPhone());
+            hr.setTelephone(employeeByName.getPhone());
+        }
+        hr.setPassword("$2a$10$ySG2lkvjFHY5O0./CPIE1OI8VJsuKYEzOYzqIa7AJR6sEgSzUFOAm");
+        if (StringUtils.isBlank(hr.getUserface())){
+            hr.setUserface("https://imgsa.baidu.com/forum/pic/item/a832bc315c6034a8df786e5ac31349540823766e.jpg");
+        }
+        hr.setEnabled(true);
+        hr.setEmployeeId(employeeByName.getId());
+        hrMapper.insert(hr);
+        Hr addHr = hrMapper.loadUserByEmployeeId(employeeByName.getId());
+        Role role = roleMapper.selectByName("员工角色");
+        if (role == null){
+            throw new RuntimeException("应先创建员工角色");
+        }
+        hrRoleMapper.addHrRole(addHr.getId(), new Integer[]{role.getId()});
         oplogService.addOpLog(new OpLog((byte) 2, new Date(), "员工入职::name:" + employee.getName() + "workId:" + employee.getWorkid(), Hruitls.getCurrent().getName()));
         EmailUtils.sendEmail(new EmailModel(employee, "人事管理系统测试##员工入职","emailpy.py"));
 //        mailReceiver.handler(employee);
@@ -88,7 +144,20 @@ public class EmployeeService {
         employee.setId(null);
         employeeRecycleService.addEmployeeRecycle(employee);
         oplogService.addOpLog(new OpLog((byte) 9, new Date(), "员工离职:name:" + employee.getName() + "---workId:" + employee.getWorkid(), Hruitls.getCurrent().getName()));
-        EmailUtils.sendEmail(new EmailModel(employee, "人事管理系统测试##员工离职","emailpyout.py"));
+        EmailUtils.sendEmail(new EmailModel(employee, "人事管理系统测试##员工离职", "emailpyout.py"));
+        employee.setDepartmentid(null);
+        employee.setJoblevelid(null);
+        employee.setPosid(null);
+        employee.setPoliticid(null);
+        employee.setWorkid(null);
+        employee.setNationid(null);
+        employee.setId(id);
+        int i = employeeMapper.updateByPrimaryKey(employee);
+        employeeremoveMapper.deleteByEmpId(id);
+        employeetrainMapper.deleteByEmploy(id);
+        empSalaryMapper.deleteByEmpId(id);
+        appraiseMapper.deleteAppraiseEmpId(id);
+        employeeecMapper.deleteByEmpId(id);
         return employeeMapper.deleteByPrimaryKey(id);
     }
 
@@ -108,8 +177,11 @@ public class EmployeeService {
     }
 
     public Integer deleteEmpByEids(Integer[] ids) {
-        oplogService.addOpLog(new OpLog((byte) 9, new Date(), "员工批量离职:name:" , Hruitls.getCurrent().getName()));
-        return employeeMapper.deleteByPrimaryKeys(ids);
+        oplogService.addOpLog(new OpLog((byte) 9, new Date(), "员工批量离职:name:", Hruitls.getCurrent().getName()));
+        for (Integer id : ids) {
+            deleteEmpByEid(id);
+        }
+        return ids.length;
     }
 
     public RespPageBean getEmployeeByPageWithSalary(Integer page, Integer size) {

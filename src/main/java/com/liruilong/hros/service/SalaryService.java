@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -37,7 +38,9 @@ public class SalaryService {
     }
 
     public Integer updateSalaryById(Salary salary) {
-        salary.setAllsalary( salary.getBasicsalary() + salary.getBonus() + salary.getLunchsalary() + salary.getTrafficsalary() + salary.getPensionbase() );
+        int total = salary.getBasicsalary() + salary.getBonus() + salary.getLunchsalary() + salary.getTrafficsalary();
+        float v = salary.getPensionbase() * salary.getPensionper() + salary.getMedicalbase() * salary.getMedicalper() + salary.getAccumulationfundbase() * salary.getAccumulationfundper();
+        salary.setAllsalary((int) BigDecimal.valueOf(total).subtract(BigDecimal.valueOf(v)).doubleValue());
         oplogService.addOpLog(new OpLog((byte) 5, new Date(), "更新套账:" + salary.getName(), Hruitls.getCurrent().getName()));
 
         return salaryMapper.updateByPrimaryKeySelective(salary);

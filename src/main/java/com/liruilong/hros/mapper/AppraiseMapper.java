@@ -2,7 +2,6 @@ package com.liruilong.hros.mapper;
 
 import com.liruilong.hros.model.Appraise;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.security.core.parameters.P;
 
 public interface AppraiseMapper {
     int deleteByPrimaryKey(Integer id);
@@ -17,7 +16,10 @@ public interface AppraiseMapper {
 
     int updateByPrimaryKey(Appraise record);
 
-    Integer  deleteAppraise(@Param("eid") Integer eid,@Param("id") Integer id);
+    Integer deleteAppraise(@Param("eid") Integer eid, @Param("id") Integer id);
 
-    Integer  addEmploteeaByPge( @Param("app") Appraise appraise, @Param("ids") Integer[] ids);
+    Integer deleteAppraiseEmpId(@Param("eid") Integer eid);
+
+
+    Integer addEmploteeaByPge(@Param("app") Appraise appraise, @Param("ids") Integer[] ids);
 }

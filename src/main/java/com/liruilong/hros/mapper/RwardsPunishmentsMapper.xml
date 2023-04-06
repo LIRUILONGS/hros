@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.liruilong.hros.mapper.RwardsPunishmentsMapper" >
-  <resultMap id="BaseResultMap" type="com.liruilong.hros.model.RwardsPunishments" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="rpsystem_id" property="rpsystemId" jdbcType="INTEGER" />
-    <result column="rpmsg" property="rpmsg" jdbcType="VARCHAR" />
-    <result column="rpiont" property="rpiont" jdbcType="INTEGER" />
-    <result column="createrp" property="createrp" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <resultMap id="BaseResultMap1" type="com.liruilong.hros.model.RwardsPunishments" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="rpsystem_id" property="rpsystemId" jdbcType="INTEGER" />
-    <result column="rpmsg" property="rpmsg" jdbcType="VARCHAR" />
-    <result column="rpiont" property="rpiont" jdbcType="INTEGER" />
-    <result column="createrp" property="createrp" jdbcType="TIMESTAMP" />
-    <association property="rwardsAndPunishments" javaType="com.liruilong.hros.model.RwardsAndPunishments">
-      <result column="rpsystem" property="rpsystem" jdbcType="VARCHAR"/>
-    </association>
-  </resultMap>
+<mapper namespace="com.liruilong.hros.mapper.RwardsPunishmentsMapper">
+    <resultMap id="BaseResultMap" type="com.liruilong.hros.model.RwardsPunishments">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="rpsystem_id" property="rpsystemId" jdbcType="INTEGER"/>
+        <result column="rpmsg" property="rpmsg" jdbcType="VARCHAR"/>
+        <result column="rpiont" property="rpiont" jdbcType="INTEGER"/>
+        <result column="createrp" property="createrp" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <resultMap id="BaseResultMap1" type="com.liruilong.hros.model.RwardsPunishments">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="rpsystem_id" property="rpsystemId" jdbcType="INTEGER"/>
+        <result column="rpmsg" property="rpmsg" jdbcType="VARCHAR"/>
+        <result column="rpiont" property="rpiont" jdbcType="INTEGER"/>
+        <result column="createrp" property="createrp" jdbcType="TIMESTAMP"/>
+        <association property="rwardsAndPunishments" javaType="com.liruilong.hros.model.RwardsAndPunishments">
+            <result column="rpsystem" property="rpsystem" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
   <sql id="Base_Column_List" >
     id, rpsystem_id, rpmsg, rpiont, createrp
   </sql>
@@ -47,23 +47,23 @@
     #{id,jdbcType=INTEGER}
     </foreach>
   </delete>
-  <insert id="insert" parameterType="com.liruilong.hros.model.RwardsPunishments" >
-    insert into rwards_punishments (id, rpsystem_id, rpmsg, 
-      rpiont, createrp)
-    values (#{id,jdbcType=INTEGER}, #{rpsystemId,jdbcType=INTEGER}, #{rpmsg,jdbcType=VARCHAR}, 
-      #{rpiont,jdbcType=INTEGER}, #{createrp,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" parameterType="com.liruilong.hros.model.RwardsPunishments" >
-    insert into rwards_punishments
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="rpsystemId != null" >
-        rpsystem_id,
-      </if>
-      <if test="rpmsg != null" >
-        rpmsg,
+    <insert id="insert" parameterType="com.liruilong.hros.model.RwardsPunishments">
+        insert into rwards_punishments (id, rpsystem_id, rpmsg,
+                                        rpiont, createrp)
+        values (#{id,jdbcType=INTEGER}, #{rpsystemId,jdbcType=INTEGER}, #{rpmsg,jdbcType=VARCHAR},
+                #{rpiont,jdbcType=INTEGER}, #{createrp,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.liruilong.hros.model.RwardsPunishments">
+        insert into rwards_punishments
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="rpsystemId != null">
+                rpsystem_id,
+            </if>
+            <if test="rpmsg != null">
+                rpmsg,
       </if>
       <if test="rpiont != null" >
         rpiont,
@@ -90,17 +90,17 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.liruilong.hros.model.RwardsPunishments" >
-    update rwards_punishments
-    <set >
-      <if test="rpsystemId != null" >
-        rpsystem_id = #{rpsystemId,jdbcType=INTEGER},
-      </if>
-      <if test="rpmsg != null" >
-        rpmsg = #{rpmsg,jdbcType=VARCHAR},
-      </if>
-      <if test="rpiont != null" >
-        rpiont = #{rpiont,jdbcType=INTEGER},
+    <update id="updateByPrimaryKeySelective" parameterType="com.liruilong.hros.model.RwardsPunishments">
+        update rwards_punishments
+        <set>
+            <if test="rpsystemId != null">
+                rpsystem_id = #{rpsystemId,jdbcType=INTEGER},
+            </if>
+            <if test="rpmsg != null">
+                rpmsg = #{rpmsg,jdbcType=VARCHAR},
+            </if>
+            <if test="rpiont != null">
+                rpiont = #{rpiont,jdbcType=INTEGER},
       </if>
       <if test="createrp != null" >
         createrp = #{createrp,jdbcType=TIMESTAMP},
@@ -108,12 +108,12 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.liruilong.hros.model.RwardsPunishments" >
-    update rwards_punishments
-    set rpsystem_id = #{rpsystemId,jdbcType=INTEGER},
-      rpmsg = #{rpmsg,jdbcType=VARCHAR},
-      rpiont = #{rpiont,jdbcType=INTEGER},
-      createrp = #{createrp,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+    <update id="updateByPrimaryKey" parameterType="com.liruilong.hros.model.RwardsPunishments">
+        update rwards_punishments
+        set rpsystem_id = #{rpsystemId,jdbcType=INTEGER},
+            rpmsg       = #{rpmsg,jdbcType=VARCHAR},
+            rpiont      = #{rpiont,jdbcType=INTEGER},
+            createrp    = #{createrp,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * @Author Liruilong
+ * @Author liruilong
  * @Description
  * @Date 23:31 2019/12/28
  * @Param
@@ -22,10 +22,12 @@ import java.util.List;
 public class DepartmentController {
     @Autowired
     DepartmentService departmentService;
+
     @GetMapping("/")
     public List<Department> getAllDepartments() {
         return departmentService.getAllDepartments();
     }
+
     @PostMapping("/")
     public RespBean addDep(@RequestBody Department dep) {
         departmentService.addDep(dep);
@@ -46,6 +48,8 @@ public class DepartmentController {
             return RespBean.error("该部门下有员工，删除失败");
         } else if (dep.getResult() == 1) {
             return RespBean.ok("删除成功");
+        } else if (dep.getResult() == -3) {
+            return RespBean.error("该只有一个部门, 无法删除");
         }
         return RespBean.error("删除失败");
     }

@@ -2,7 +2,7 @@ package com.liruilong.hros.model;
 
 /**
  * @Description :标识属性
- * @Author: Liruilong
+
  * @Date: 2019/12/21 13:06
  */
 public class Meta {

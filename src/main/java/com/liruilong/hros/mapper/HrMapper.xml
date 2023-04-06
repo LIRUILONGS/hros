@@ -1,30 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.liruilong.hros.mapper.HrMapper" >
-  <resultMap id="BaseResultMap" type="com.liruilong.hros.model.Hr" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="phone" property="phone" jdbcType="CHAR" />
-    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
-    <result column="address" property="address" jdbcType="VARCHAR" />
-    <result column="enabled" property="enabled" jdbcType="BIT" />
-    <result column="username" property="username" jdbcType="VARCHAR" />
-    <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="userface" property="userface" jdbcType="VARCHAR" />
-    <result column="remark" property="remark" jdbcType="VARCHAR" />
-  </resultMap>
-  <resultMap id="BaseResultMap1" type="com.liruilong.hros.model.Hr" extends="BaseResultMap">
-    <collection property="roles" ofType="com.liruilong.hros.model.Role">
-      <id column="rid" property="id" jdbcType="INTEGER" />
-      <result column="rname" property="name" jdbcType="VARCHAR" />
-      <result column="rnameZh" property="namezh" jdbcType="VARCHAR" />
-    </collection>
-  </resultMap>
-  <sql id="Base_Column_List" >
-    id, name, phone, telephone, address, enabled, username, password, userface, remark
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+<mapper namespace="com.liruilong.hros.mapper.HrMapper">
+    <resultMap id="BaseResultMap" type="com.liruilong.hros.model.Hr">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="CHAR"/>
+        <result column="telephone" property="telephone" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="enabled" property="enabled" jdbcType="BIT"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="userface" property="userface" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="employee_id" property="employeeId" jdbcType="VARCHAR"/>
+        <result column="work_date" property="workDate" jdbcType="VARCHAR"/>
+
+        <collection property="roles" ofType="com.liruilong.hros.model.Role">
+            <id column="rid" property="id" jdbcType="INTEGER"/>
+            <result column="rname" property="name" jdbcType="VARCHAR"/>
+            <result column="rnamezh" property="namezh" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+    <resultMap id="BaseResultMap1" type="com.liruilong.hros.model.Hr" extends="BaseResultMap">
+        <collection property="roles" ofType="com.liruilong.hros.model.Role">
+            <id column="rid" property="id" jdbcType="INTEGER"/>
+            <result column="rname" property="name" jdbcType="VARCHAR"/>
+            <result column="rnamezh" property="namezh" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, name, phone, telephone, address, enabled, username, password, userface, remark,  employee_id,work_date
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
     <include refid="Base_Column_List" />
     from hr
     where id = #{id,jdbcType=INTEGER}
@@ -34,49 +42,64 @@
     <include refid="Base_Column_List" />
     FROM  hr WHERE username=#{username}
     </select>
+    <select id="loadUserByEmployeeId" resultMap="BaseResultMap1">
+        SELECT
+            hr.id, hr.name, hr.phone, hr.password, hr.telephone, hr.address, hr.enabled, hr.username, hr.userface, hr.remark, hr.employee_id, hr.work_date, r.id as rid, r.name as rname, r.namezh as rnamezh
+        FROM  hr left join hr_role hrr on  hr.id = hrr.hrid left join role r on hrr.rid = r.id
+        WHERE  hr.employee_id=#{employeeId}
+    </select>
     <select id="getHrRolesById" resultType="com.liruilong.hros.model.Role">
-          select r.* from role r,hr_role hrr where hrr.`rid`=r.`id` and hrr.`hrid`=#{id}
+        select r.*
+        from role r,
+             hr_role hrr
+        where hrr.`rid` = r.`id`
+          and hrr.`hrid` = #{id}
     </select>
     <select id="getAllHRs"  resultMap="BaseResultMap1">
       SELECT
-      hr.id, hr.name, hr.phone, hr.telephone, hr.address, hr.enabled, hr.username, hr.userface, hr.remark, r.id as rid, r.name as rname, r.namezh as rnamezh
+      hr.id, hr.name, hr.phone, hr.telephone, hr.address, hr.enabled, hr.username, hr.userface, hr.remark, hr.employee_id, hr.work_date, r.id as rid, r.name as rname, r.namezh as rnamezh
       FROM  hr left join hr_role hrr on  hr.id = hrr.hrid left join role r on hrr.rid = r.id
-      WHERE hr.id != #{id,jdbcType=INTEGER}
+      WHERE hr.id != #{id,jdbcType=INTEGER} AND hr.employee_id is NULL
       <if test="name != null" >
         AND  hr.name LIKE  concat('%',#{name,jdbcType=VARCHAR},'%')
         </if>
+
     </select>
+
     <select id="getAllHrsExceptCurrentHr" resultMap="BaseResultMap">
-        SELECT <include refid="Base_Column_List" /> from hr
+        SELECT
+        <include refid="Base_Column_List"/>
+        from hr
         WHERE hr.id != #{id,jdbcType=INTEGER}
     </select>
 
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from hr
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.liruilong.hros.model.Hr" >
-    insert into hr (id, name, phone, 
-      telephone, address, enabled, 
-      username, password, userface, 
-      remark)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=CHAR}, 
-      #{telephone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{enabled,jdbcType=BIT}, 
-      #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{userface,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.liruilong.hros.model.Hr" >
-    insert into hr
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="name != null" >
-        name,
-      </if>
-      <if test="phone != null" >
-        phone,
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from hr
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.liruilong.hros.model.Hr">
+        insert into hr (name, phone,
+                        telephone, address, enabled,
+                        username, password, userface,
+                        remark, employee_id)
+        values (#{name,jdbcType=VARCHAR}, #{phone,jdbcType=CHAR},
+                #{telephone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{enabled,jdbcType=BIT},
+                #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{userface,jdbcType=VARCHAR},
+                #{remark,jdbcType=VARCHAR}, #{employeeId,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="com.liruilong.hros.model.Hr">
+        insert into hr
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="phone != null">
+                phone,
       </if>
       <if test="telephone != null" >
         telephone,
@@ -133,17 +156,17 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.liruilong.hros.model.Hr" >
-    update hr
-    <set >
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="phone != null" >
-        phone = #{phone,jdbcType=CHAR},
-      </if>
-      <if test="telephone != null" >
-        telephone = #{telephone,jdbcType=VARCHAR},
+    <update id="updateByPrimaryKeySelective" parameterType="com.liruilong.hros.model.Hr">
+        update hr
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=CHAR},
+            </if>
+            <if test="telephone != null">
+                telephone = #{telephone,jdbcType=VARCHAR},
       </if>
       <if test="address != null" >
         address = #{address,jdbcType=VARCHAR},
@@ -166,17 +189,29 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.liruilong.hros.model.Hr" >
-    update hr
-    set name = #{name,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=CHAR},
-      telephone = #{telephone,jdbcType=VARCHAR},
-      address = #{address,jdbcType=VARCHAR},
-      enabled = #{enabled,jdbcType=BIT},
-      username = #{username,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      userface = #{userface,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR}
+    <update id="updatePasswordByPrimaryKey" parameterType="com.liruilong.hros.model.Hr">
+        update hr
+        set  password = #{password,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+    <update id="updateWorkDate" parameterType="com.liruilong.hros.model.Hr">
+        update hr
+          set  work_date = #{workDate,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.liruilong.hros.model.Hr">
+        update hr
+        set name      = #{name,jdbcType=VARCHAR},
+            phone     = #{phone,jdbcType=CHAR},
+            telephone = #{telephone,jdbcType=VARCHAR},
+            address   = #{address,jdbcType=VARCHAR},
+            enabled   = #{enabled,jdbcType=BIT},
+            username  = #{username,jdbcType=VARCHAR},
+            password  = #{password,jdbcType=VARCHAR},
+            userface  = #{userface,jdbcType=VARCHAR},
+            remark    = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>

@@ -56,13 +56,11 @@
     </foreach>
     </delete>
     <insert id="insert" parameterType="com.liruilong.hros.model.MainNorice">
-    insert into main_notice (id, title, authon, 
-      create_time, update_time, mainbody
-      )
-    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{authon,jdbcType=VARCHAR},
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{mainbody,jdbcType=LONGVARCHAR}
-      )
-  </insert>
+        insert into main_notice (id, title, authon,
+                                 create_time, update_time, mainbody)
+        values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{authon,jdbcType=VARCHAR},
+                #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{mainbody,jdbcType=LONGVARCHAR})
+    </insert>
     <insert id="insertSelective" parameterType="com.liruilong.hros.model.MainNorice">
         insert into main_notice
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -122,20 +120,20 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.liruilong.hros.model.MainNorice">
-    update main_notice
-    set title = #{title,jdbcType=VARCHAR},
-      authon = #{authon,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      mainbody = #{mainbody,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+        update main_notice
+        set title       = #{title,jdbcType=VARCHAR},
+            authon      = #{authon,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            mainbody    = #{mainbody,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
     <update id="updateByPrimaryKey" parameterType="com.liruilong.hros.model.MainNorice">
-    update main_notice
-    set title = #{title,jdbcType=VARCHAR},
-      authon = #{authon,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+        update main_notice
+        set title       = #{title,jdbcType=VARCHAR},
+            authon      = #{authon,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>

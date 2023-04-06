@@ -2,7 +2,7 @@ package com.liruilong.hros.model.datas;
 
 /**
  * @Description :
- * @Author: Liruilong
+
  * @Date: 2020/1/6 19:57
  */
 public class DataModelT  extends DataModel{

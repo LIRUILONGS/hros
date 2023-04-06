@@ -56,11 +56,11 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
     <insert id="insert" parameterType="com.liruilong.hros.model.OpLog">
-    insert into oplog (id, logtype, addDate, 
-      operate, hrname)
-    values (#{id,jdbcType=INTEGER}, #{logtype,jdbcType=TINYINT}, #{adddate,jdbcType=TIMESTAMP}, 
-      #{operate,jdbcType=VARCHAR}, #{hrname,jdbcType=VARCHAR})
-  </insert>
+        insert into oplog (id, logtype, addDate,
+                           operate, hrname)
+        values (#{id,jdbcType=INTEGER}, #{logtype,jdbcType=TINYINT}, #{adddate,jdbcType=TIMESTAMP},
+                #{operate,jdbcType=VARCHAR}, #{hrname,jdbcType=VARCHAR})
+    </insert>
     <insert id="insertSelective" parameterType="com.liruilong.hros.model.OpLog">
         insert into oplog
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -117,11 +117,11 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.liruilong.hros.model.OpLog">
-    update oplog
-    set logtype = #{logtype,jdbcType=TINYINT},
-      addDate = #{adddate,jdbcType=TIMESTAMP},
-      operate = #{operate,jdbcType=VARCHAR},
-      hrname = #{hrname,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+        update oplog
+        set logtype = #{logtype,jdbcType=TINYINT},
+            addDate = #{adddate,jdbcType=TIMESTAMP},
+            operate = #{operate,jdbcType=VARCHAR},
+            hrname  = #{hrname,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>

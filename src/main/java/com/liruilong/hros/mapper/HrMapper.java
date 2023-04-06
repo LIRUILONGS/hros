@@ -2,7 +2,6 @@ package com.liruilong.hros.mapper;
 
 import com.liruilong.hros.model.Hr;
 import com.liruilong.hros.model.Role;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -21,9 +20,13 @@ public interface HrMapper {
 
     int updateByPrimaryKey(Hr record);
 
+    int updatePasswordByPrimaryKey(Hr record);
+
+    int updateWorkDate(Hr record);
+
     /**
-     * @return com.liruilong.hros.model.Hr
-     * @Author Liruilong
+     * @return Hr
+     * @Author liruilong
      * @Description 登录
      * @Date 19:06 2019/12/18
      * @Param [username]
@@ -31,9 +34,11 @@ public interface HrMapper {
 
     Hr loadUserByUsername(String username);
 
+    Hr loadUserByEmployeeId(Integer employeeId);
+
     /**
-     * @return java.util.List<com.liruilong.hros.model.Role>
-     * @Author Liruilong
+     * @return java.util.List<Role>
+     * @Author liruilong
      * @Description 获取当前用户的所用角色
      * @Date 23:23 2019/12/24
      * @Param [id]

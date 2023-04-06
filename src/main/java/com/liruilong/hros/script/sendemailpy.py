@@ -9,7 +9,7 @@ from email.header import Header
 # 用于构建邮件头
 
 # 发信方的信息：发信邮箱，QQ 邮箱授权码
-from_addr = 'liruilong108@foxmail.com'
+from_addr = 'xuezixiang108@foxmail.com'
 password = 'xznjnyvgnvmuicji'
 
 # 收信方邮箱

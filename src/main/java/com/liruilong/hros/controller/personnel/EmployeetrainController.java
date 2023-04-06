@@ -5,13 +5,12 @@ import com.liruilong.hros.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 /**
  * @Description :
- * @Author: Liruilong
+
  * @Date: 2020/1/12 12:27
  */
 @RestController
@@ -85,12 +84,13 @@ public class EmployeetrainController {
             return RespBean.error("更新失败");
         }
     }
+
     /**
-     * @Author Liruilong
-     * @Description  删除
+     * @return RespBean
+     * @Author liruilong
+     * @Description 删除
      * @Date 22:35 2020/1/13
      * @Param [eid, id]
-     * @return com.liruilong.hros.model.RespBean
      **/
 
     @DeleteMapping("/{eid}/{id}")
@@ -117,11 +117,11 @@ public class EmployeetrainController {
     }
 
     /**
-     * @Author Liruilong
-     * @Description   批量处理
+     * @Author liruilong
+     * @Description 批量处理
      * @Date 22:35 2020/1/13
      * @Param [employeetrain, ids, beginDateScope]
-     * @return com.liruilong.hros.model.RespBean
+     * @return RespBean
      **/
 
     @GetMapping("/addt")

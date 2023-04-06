@@ -1,10 +1,7 @@
 package com.liruilong.hros.mapper;
 
 import com.liruilong.hros.model.Employee;
-
-import com.liruilong.hros.model.Employeetrain;
 import com.liruilong.hros.model.datas.DataModel;
-
 import com.liruilong.hros.model.datas.DataModels;
 import org.apache.ibatis.annotations.Param;
 
@@ -35,6 +32,8 @@ public interface EmployeeMapper {
     Integer addEmps(List<Employee> list);
 
     Employee getEmployeeById(Integer id);
+
+    Employee getEmployeeByName(String name);
 
     Integer deleteByPrimaryKeys(@Param("ids") Integer[] ids);
 

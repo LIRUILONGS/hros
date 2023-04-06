@@ -7,8 +7,8 @@ import java.util.Date;
 import java.util.Objects;
 
 /**
- * @Author Liruilong
- * @Description  职位
+ * @Author liruilong
+ * @Description 职位
  * @Date 12:11 2019/12/25
  * @Param
  * @return

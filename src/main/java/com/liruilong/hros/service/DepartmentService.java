@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @Author Liruilong
+ * @Author liruilong
  * @Description
  * @Date 23:29 2019/12/28
  * @Param
@@ -40,8 +40,13 @@ public class DepartmentService {
     }
 
     public void deleteDepById(Department dep) {
+        List<Department> withOutChildren = departmentMapper.getAllDepartmentsWithOutChildren();
+        if (withOutChildren.size() <= 1) {
+            dep.setResult(-3);
+            return;
+        }
         departmentMapper.deleteDepById(dep);
-        oplogService.addOpLog(new OpLog((byte) 1,new Date(),"删除部门:id=" + dep.getId(), Hruitls.getCurrent().getName()));
+        oplogService.addOpLog(new OpLog((byte) 1, new Date(), "删除部门:id=" + dep.getId(), Hruitls.getCurrent().getName()));
     }
 
 

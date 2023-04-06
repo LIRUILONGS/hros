@@ -14,7 +14,7 @@ import java.util.Collection;
 
 /**
  * @Description : 判断当前用户是否具备菜单访问
- * @Author: Liruilong
+
  * @Date: 2019/12/24 19:12
  */
 @Component
