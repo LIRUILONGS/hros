@@ -3,6 +3,7 @@
 <mapper namespace="com.liruilong.hros.mapper.EmployeeMapper">
     <resultMap id="BaseResultMap" type="com.liruilong.hros.model.Employee">
         <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="id" property="id" jdbcType="INTEGER"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="gender" property="gender" jdbcType="CHAR"/>
         <result column="birthday" property="birthday" jdbcType="DATE"/>
@@ -51,6 +52,11 @@
         <association property="position" javaType="com.liruilong.hros.model.Position">
             <id column="posid" property="id"/>
             <result column="posname" property="name"/>
+        </association>
+        <association property="hr" javaType="com.liruilong.hros.model.Hr">
+            <id column="hId" property="id"/>
+            <result column="work_date" property="workDate"/>
+            <result column="enabled" property="enabled"/>
         </association>
     </resultMap>
     <resultMap id="EmployeeWithSalary" type="com.liruilong.hros.model.Employee" extends="AllEmployeeInfo">
@@ -160,17 +166,36 @@
         </association>
     </resultMap>
     <sql id="Base_Column_List">
-    id, name, gender, birthday, idCard, wedlock, nationId, nativePlace, politicId, email, 
+        id
+        , name, gender, birthday, idCard, wedlock, nationId, nativePlace, politicId, email,
     phone, address, departmentId, jobLevelId, posId, engageForm, tiptopDegree, specialty, 
     school, beginDate, workState, workID, contractTerm, conversionTime, notWorkDate, 
     beginContract, endContract, workAge
-  </sql>
+    </sql>
     <select id="selectByPrimaryKey" resultMap="AllEmployeeInfo">
-         select e.*,p.`id` as pid,p.`name` as pname,n.`id` as nid,n.`name` as nname,d.`id` as did,d.`name` as
-        dname,j.`id` as jid,j.`name` as jname,pos.`id` as posid,pos.`name` as posname
-        from employee e,nation n,politicsstatus p,department d,joblevel j,position pos
-        where e.`nationId`=n.`id` and e.`politicId`=p.`id` and
-        e.`departmentId`=d.`id` and e.`jobLevelId`=j.`id` and e.`posId`=pos.`id`
+        select e.*,
+               p.`id`     as pid,
+               p.`name`   as pname,
+               n.`id`     as nid,
+               n.`name`   as nname,
+               d.`id`     as did,
+               d.`name`   as
+                             dname,
+               j.`id`     as jid,
+               j.`name`   as jname,
+               pos.`id`   as posid,
+               pos.`name` as posname
+        from employee e,
+             nation n,
+             politicsstatus p,
+             department d,
+             joblevel j,
+             position pos
+        where e.`nationId` = n.`id`
+          and e.`politicId` = p.`id`
+          and e.`departmentId` = d.`id`
+          and e.`jobLevelId` = j.`id`
+          and e.`posId` = pos.`id`
     </select>
     <select id="getTotal" resultType="java.lang.Long">
         SELECT COUNT(*) FROM employee e
@@ -204,11 +229,11 @@
         </where>
     </select>
     <select id="getEmployeeByPage" resultMap="AllEmployeeInfo">
-        select e.*,p.`id` as pid,p.`name` as pname,n.`id` as nid,n.`name` as nname,d.`id` as did,d.`name` as
-        dname,j.`id` as jid,j.`name` as jname,pos.`id` as posid,pos.`name` as posname
-        from employee e,nation n,politicsstatus p,department d,joblevel j,position pos
+        select e.*,p.`id` as pid,p.`name` as pname,n.`id` as nid, n.`name` as nname,d.`id` as did,d.`name` as
+        dname,j.`id` as jid,j.`name` as jname,pos.`id` as posid, pos.`name` as posname, hr.id as hId, hr.work_date, hr.enabled
+        from employee e,nation n,politicsstatus p,department d,joblevel j,position pos, hr
         where e.`nationId`=n.`id` and e.`politicId`=p.`id` and
-        e.`departmentId`=d.`id` and e.`jobLevelId`=j.`id` and e.`posId`=pos.`id`
+        e.`departmentId`=d.`id` and e.`jobLevelId`=j.`id` and e.`posId`=pos.`id` and hr.`employee_id` = e.id
         <if test="emp != null">
             <if test="emp.name !=null and emp.name!=''">
                 and e.name like concat('%',#{emp.name},'%')
@@ -271,13 +296,60 @@
         </if>
     </select>
     <select id="maxWorkID" resultType="java.lang.Integer">
-    select max(workID) from employee
-  </select>
+        select max(workID)
+        from employee
+    </select>
     <select id="getEmployeeById" resultMap="AllEmployeeInfo">
-        select e.*,p.`id` as pid,p.`name` as pname,n.`id` as nid,n.`name` as nname,d.`id` as did,d.`name` as
-        dname,j.`id` as jid,j.`name` as jname,pos.`id` as posid,pos.`name` as posname from employee e,nation
-        n,politicsstatus p,department d,joblevel j,position pos where e.`nationId`=n.`id` and e.`politicId`=p.`id` and
-        e.`departmentId`=d.`id` and e.`jobLevelId`=j.`id` and e.`posId`=pos.`id` and e.`id`=#{id}
+        select e.*,
+               p.`id`     as pid,
+               p.`name`   as pname,
+               n.`id`     as nid,
+               n.`name`   as nname,
+               d.`id`     as did,
+               d.`name`   as
+                             dname,
+               j.`id`     as jid,
+               j.`name`   as jname,
+               pos.`id`   as posid,
+               pos.`name` as posname
+        from employee e,
+             nation n,
+             politicsstatus p,
+             department d,
+             joblevel j,
+             position pos
+        where e.`nationId` = n.`id`
+          and e.`politicId` = p.`id`
+          and e.`departmentId` = d.`id`
+          and e.`jobLevelId` = j.`id`
+          and e.`posId` = pos.`id`
+          and e.`id` = #{id}
+    </select>
+    <select id="getEmployeeByName" resultMap="AllEmployeeInfo">
+        select e.*,
+               p.`id`     as pid,
+               p.`name`   as pname,
+               n.`id`     as nid,
+               n.`name`   as nname,
+               d.`id`     as did,
+               d.`name`   as
+                             dname,
+               j.`id`     as jid,
+               j.`name`   as jname,
+               pos.`id`   as posid,
+               pos.`name` as posname
+        from employee e,
+             nation n,
+             politicsstatus p,
+             department d,
+             joblevel j,
+             position pos
+        where e.`nationId` = n.`id`
+          and e.`politicId` = p.`id`
+          and e.`departmentId` = d.`id`
+          and e.`jobLevelId` = j.`id`
+          and e.`posId` = pos.`id`
+          and e.`name` = #{name}
     </select>
     <select id="getEmployeeByPageWithSalary" resultMap="EmployeeWithSalary">
         SELECT distinct e.*,d.`name` AS dname,s.`id` AS sid,s.`accumulationFundBase` AS
@@ -295,34 +367,45 @@
         </if>
     </select>
     <select id="dataViewPosition" resultMap="DataViewbean">
-      select pos.`name` as name, COUNT(*) as sum
-        from employee e,position pos
-        where  e.`posId`=pos.`id` GROUP BY name
+        select pos.`name` as name, COUNT(*) as sum
+        from employee e, position pos
+        where e.`posId`=pos.`id`
+        GROUP BY name
     </select>
     <select id="dataViewJobLevel" resultType="com.liruilong.hros.model.datas.DataModel">
-        select j.`name` as name , COUNT(*) as sum
-        from employee e,joblevel j
-        where  e.`jobLevelId`=j.`id` GROUP BY name
+        select j.`name` as name, COUNT(*) as sum
+        from employee e,
+            joblevel j
+        where e.`jobLevelId` = j.`id`
+        GROUP BY name
     </select>
     <select id="dataViewDepartment" resultType="com.liruilong.hros.model.datas.DataModel">
-       select d.`name` as name,COUNT(*) as sum
-        from employee e,department d
-        where  e.`departmentId`=d.`id` GROUP BY name
+        select d.`name` as name, COUNT(*) as sum
+        from employee e,
+            department d
+        where e.`departmentId` = d.`id`
+        GROUP BY name
     </select>
     <select id="dataViewNation" resultType="com.liruilong.hros.model.datas.DataModel">
-         select  n.`name` as name, COUNT(*) as sum
-        from employee e,nation n
-        where e.`nationId`=n.`id` GROUP BY name
+        select n.`name` as name, COUNT(*) as sum
+        from employee e,
+            nation n
+        where e.`nationId` = n.`id`
+        GROUP BY name
     </select>
     <select id="DataViewPoliticsstatus" resultType="com.liruilong.hros.model.datas.DataModel">
-          select p.`name` as name,COUNT(*) as sum
-        from employee e,politicsstatus p
-        where  e.`politicId`=p.`id`GROUP BY name
+        select p.`name` as name, COUNT(*) as sum
+        from employee e,
+            politicsstatus p
+        where e.`politicId` = p.`id`
+        GROUP BY name
     </select>
     <select id="dataViewJobLevelAge" resultType="com.liruilong.hros.model.datas.DataModels">
-         select j.`name` as name , COUNT(*) as sum,  round(AVG(TIMESTAMPDIFF(YEAR, e.birthday, CURDATE()) ) ) as  workage
-        from employee e,joblevel j
-        where  e.`jobLevelId`=j.`id` GROUP BY name
+        select j.`name` as name, COUNT(*) as sum, round(AVG(TIMESTAMPDIFF(YEAR, e.birthday, CURDATE()))) as workage
+        from employee e,
+            joblevel j
+        where e.`jobLevelId` = j.`id`
+        GROUP BY name
     </select>
     <select id="getTotalc" resultType="java.lang.Long">
         SELECT COUNT(*)
@@ -718,15 +801,13 @@
         </if>
     </select>
     <select id="getTotaS" resultType="java.lang.Long">
-    SELECT DISTINCT
-        COUNT( *)
-    FROM
-        employee e
-	INNER JOIN empsalary es ON e.`id` = es.`eid`
-	INNER JOIN salary s ON es.`sid` = s.`id`
-	INNER JOIN department d ON e.`departmentId` = d.`id`
-	INNER  JOIN joblevel j ON e.`jobLevelId` = j.`id`
-	INNER JOIN position pos ON e.posId = pos.id
+        SELECT DISTINCT COUNT(*)
+        FROM employee e
+                 INNER JOIN empsalary es ON e.`id` = es.`eid`
+                 INNER JOIN salary s ON es.`sid` = s.`id`
+                 INNER JOIN department d ON e.`departmentId` = d.`id`
+                 INNER JOIN joblevel j ON e.`jobLevelId` = j.`id`
+                 INNER JOIN position pos ON e.posId = pos.id
     </select>
     <select id="getAllsEmpadvanced" resultMap="AdvancedResultMap">
         SELECT
@@ -766,7 +847,7 @@
         employee e
         LEFT JOIN empsalary es ON e.`id` = es.`eid`
         LEFT JOIN salary s ON es.`sid` = s.`id`
-        LEFT JOIN	 employeetrain et ON e.id = et.eid
+        LEFT JOIN employeetrain et ON e.id = et.eid
         LEFT JOIN appraise a ON e.id = a.eid,
         nation n,
         politicsstatus p,
@@ -818,7 +899,7 @@
         employee e
         LEFT JOIN empsalary es ON e.`id` = es.`eid`
         LEFT JOIN salary s ON es.`sid` = s.`id`
-        LEFT JOIN	 employeetrain et ON e.id = et.eid
+        LEFT JOIN employeetrain et ON e.id = et.eid
         LEFT JOIN appraise a ON e.id = a.eid,
         nation n,
         politicsstatus p,
@@ -861,13 +942,16 @@
         order by e.workID DESC
     </select>
     <select id="getEmployeeAll" resultMap="BaseResultMap">
-        SELECT <include refid="Base_Column_List"/> FROM employee  order by id desc
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM employee order by id desc
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from employee
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
+        delete
+        from employee
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
     <delete id="deleteByPrimaryKeys">
         delete from employee
         where id in
@@ -902,27 +986,25 @@
         </foreach>
     </insert>
     <insert id="insert" parameterType="com.liruilong.hros.model.Employee">
-    insert into employee (id, name, gender, 
-      birthday, idCard, wedlock, nationId, 
-      nativePlace, politicId, email, 
-      phone, address, departmentId, 
-      jobLevelId, posId, engageForm, 
-      tiptopDegree, specialty, school, 
-      beginDate, workState, workID, 
-      contractTerm, conversionTime, notWorkDate, 
-      beginContract, endContract, workAge
-      )
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{gender,jdbcType=CHAR}, 
-      #{birthday,jdbcType=DATE}, #{idcard,jdbcType=CHAR}, #{wedlock,jdbcType=CHAR}, #{nationid,jdbcType=INTEGER}, 
-      #{nativeplace,jdbcType=VARCHAR}, #{politicid,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, 
-      #{phone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{departmentid,jdbcType=INTEGER}, 
-      #{joblevelid,jdbcType=INTEGER}, #{posid,jdbcType=INTEGER}, #{engageform,jdbcType=VARCHAR}, 
-      #{tiptopdegree,jdbcType=CHAR}, #{specialty,jdbcType=VARCHAR}, #{school,jdbcType=VARCHAR}, 
-      #{begindate,jdbcType=DATE}, #{workstate,jdbcType=CHAR}, #{workid,jdbcType=CHAR}, 
-      #{contractterm,jdbcType=DOUBLE}, #{conversiontime,jdbcType=DATE}, #{notworkdate,jdbcType=DATE}, 
-      #{begincontract,jdbcType=DATE}, #{endcontract,jdbcType=DATE}, #{workage,jdbcType=INTEGER}
-      )
-  </insert>
+        insert into employee (id, name, gender,
+                              birthday, idCard, wedlock, nationId,
+                              nativePlace, politicId, email,
+                              phone, address, departmentId,
+                              jobLevelId, posId, engageForm,
+                              tiptopDegree, specialty, school,
+                              beginDate, workState, workID,
+                              contractTerm, conversionTime, notWorkDate,
+                              beginContract, endContract, workAge)
+        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{gender,jdbcType=CHAR},
+                #{birthday,jdbcType=DATE}, #{idcard,jdbcType=CHAR}, #{wedlock,jdbcType=CHAR}, #{nationid,jdbcType=INTEGER},
+                #{nativeplace,jdbcType=VARCHAR}, #{politicid,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR},
+                #{phone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{departmentid,jdbcType=INTEGER},
+                #{joblevelid,jdbcType=INTEGER}, #{posid,jdbcType=INTEGER}, #{engageform,jdbcType=VARCHAR},
+                #{tiptopdegree,jdbcType=CHAR}, #{specialty,jdbcType=VARCHAR}, #{school,jdbcType=VARCHAR},
+                #{begindate,jdbcType=DATE}, #{workstate,jdbcType=CHAR}, #{workid,jdbcType=CHAR},
+                #{contractterm,jdbcType=DOUBLE}, #{conversiontime,jdbcType=DATE}, #{notworkdate,jdbcType=DATE},
+                #{begincontract,jdbcType=DATE}, #{endcontract,jdbcType=DATE}, #{workage,jdbcType=INTEGER})
+    </insert>
     <insert id="insertSelective" parameterType="com.liruilong.hros.model.Employee">
         insert into employee
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -1099,7 +1181,11 @@
         </trim>
     </insert>
     <insert id="updateEmployeeSalaryById">
-        REPLACE INTO empsalary (eid,sid) VALUES(#{eid},#{sid})
+        REPLACE
+        INTO empsalary (eid,sid) VALUES(
+        #{eid},
+        #{sid}
+        )
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.liruilong.hros.model.Employee">
         update employee
@@ -1189,34 +1275,34 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.liruilong.hros.model.Employee">
-    update employee
-    set name = #{name,jdbcType=VARCHAR},
-      gender = #{gender,jdbcType=CHAR},
-      birthday = #{birthday,jdbcType=DATE},
-      idCard = #{idcard,jdbcType=CHAR},
-      wedlock = #{wedlock,jdbcType=CHAR},
-      nationId = #{nationid,jdbcType=INTEGER},
-      nativePlace = #{nativeplace,jdbcType=VARCHAR},
-      politicId = #{politicid,jdbcType=INTEGER},
-      email = #{email,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=VARCHAR},
-      address = #{address,jdbcType=VARCHAR},
-      departmentId = #{departmentid,jdbcType=INTEGER},
-      jobLevelId = #{joblevelid,jdbcType=INTEGER},
-      posId = #{posid,jdbcType=INTEGER},
-      engageForm = #{engageform,jdbcType=VARCHAR},
-      tiptopDegree = #{tiptopdegree,jdbcType=CHAR},
-      specialty = #{specialty,jdbcType=VARCHAR},
-      school = #{school,jdbcType=VARCHAR},
-      beginDate = #{begindate,jdbcType=DATE},
-      workState = #{workstate,jdbcType=CHAR},
-      workID = #{workid,jdbcType=CHAR},
-      contractTerm = #{contractterm,jdbcType=DOUBLE},
-      conversionTime = #{conversiontime,jdbcType=DATE},
-      notWorkDate = #{notworkdate,jdbcType=DATE},
-      beginContract = #{begincontract,jdbcType=DATE},
-      endContract = #{endcontract,jdbcType=DATE},
-      workAge = #{workage,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+        update employee
+        set name           = #{name,jdbcType=VARCHAR},
+            gender         = #{gender,jdbcType=CHAR},
+            birthday       = #{birthday,jdbcType=DATE},
+            idCard         = #{idcard,jdbcType=CHAR},
+            wedlock        = #{wedlock,jdbcType=CHAR},
+            nationId       = #{nationid,jdbcType=INTEGER},
+            nativePlace    = #{nativeplace,jdbcType=VARCHAR},
+            politicId      = #{politicid,jdbcType=INTEGER},
+            email          = #{email,jdbcType=VARCHAR},
+            phone          = #{phone,jdbcType=VARCHAR},
+            address        = #{address,jdbcType=VARCHAR},
+            departmentId   = #{departmentid,jdbcType=INTEGER},
+            jobLevelId     = #{joblevelid,jdbcType=INTEGER},
+            posId          = #{posid,jdbcType=INTEGER},
+            engageForm     = #{engageform,jdbcType=VARCHAR},
+            tiptopDegree   = #{tiptopdegree,jdbcType=CHAR},
+            specialty      = #{specialty,jdbcType=VARCHAR},
+            school         = #{school,jdbcType=VARCHAR},
+            beginDate      = #{begindate,jdbcType=DATE},
+            workState      = #{workstate,jdbcType=CHAR},
+            workID         = #{workid,jdbcType=CHAR},
+            contractTerm   = #{contractterm,jdbcType=DOUBLE},
+            conversionTime = #{conversiontime,jdbcType=DATE},
+            notWorkDate    = #{notworkdate,jdbcType=DATE},
+            beginContract  = #{begincontract,jdbcType=DATE},
+            endContract    = #{endcontract,jdbcType=DATE},
+            workAge        = #{workage,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>

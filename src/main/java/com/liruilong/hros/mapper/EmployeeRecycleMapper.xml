@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.liruilong.hros.mapper.EmployeeRecycleMapper" >
-  <resultMap id="BaseResultMap" type="com.liruilong.hros.model.EmployeeRecycle" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="gender" property="gender" jdbcType="CHAR" />
-    <result column="birthday" property="birthday" jdbcType="DATE" />
-    <result column="idCard" property="idcard" jdbcType="CHAR" />
-    <result column="wedlock" property="wedlock" jdbcType="CHAR" />
-    <result column="nationId" property="nationid" jdbcType="INTEGER" />
-    <result column="nativePlace" property="nativeplace" jdbcType="VARCHAR" />
-    <result column="politicId" property="politicid" jdbcType="INTEGER" />
-    <result column="email" property="email" jdbcType="VARCHAR" />
+<mapper namespace="com.liruilong.hros.mapper.EmployeeRecycleMapper">
+    <resultMap id="BaseResultMap" type="com.liruilong.hros.model.EmployeeRecycle">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="gender" property="gender" jdbcType="CHAR"/>
+        <result column="birthday" property="birthday" jdbcType="DATE"/>
+        <result column="idCard" property="idcard" jdbcType="CHAR"/>
+        <result column="wedlock" property="wedlock" jdbcType="CHAR"/>
+        <result column="nationId" property="nationid" jdbcType="INTEGER"/>
+        <result column="nativePlace" property="nativeplace" jdbcType="VARCHAR"/>
+        <result column="politicId" property="politicid" jdbcType="INTEGER"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="address" property="address" jdbcType="VARCHAR" />
     <result column="departmentId" property="departmentid" jdbcType="INTEGER" />
@@ -43,36 +43,41 @@
     from employee_recycle
 
   </select>
-  <select id="dataViewDepartment" resultType="com.liruilong.hros.model.datas.DataModel">
-      select d.`name` as name,COUNT(*) as sum
-        from employee_recycle e,department d
-        where  e.`departmentId`=d.`id` GROUP BY name
-  </select>
-  <select id="dataViewPosition" resultType="com.liruilong.hros.model.datas.DataModels">
-     select pos.`name` as name, COUNT(*) as sum , AVG(e.workage) as workage
-        from employee_recycle e,position pos
-        where  e.`posId`=pos.`id` GROUP BY name,workage
-  </select>
-  <select id="dataViewJobLevelT" resultType="com.liruilong.hros.model.datas.DataModels">
-     select j.`name` as name , COUNT(*) as sum ,round(AVG(TIMESTAMPDIFF(YEAR, e.birthday, CURDATE()) ) ) as  workage
-        from employee_recycle e,joblevel j
-        where  e.`jobLevelId`=j.`id` GROUP BY name
-  </select>
+    <select id="dataViewDepartment" resultType="com.liruilong.hros.model.datas.DataModel">
+        select d.`name` as name, COUNT(*) as sum
+        from employee_recycle e,
+             department d
+        where e.`departmentId` = d.`id`
+        GROUP BY name
+    </select>
+    <select id="dataViewPosition" resultType="com.liruilong.hros.model.datas.DataModels">
+        select pos.`name` as name, COUNT(*) as sum, AVG(e.workage) as workage
+        from employee_recycle e,
+             position pos
+        where e.`posId` = pos.`id`
+        GROUP BY name, workage
+    </select>
+    <select id="dataViewJobLevelT" resultType="com.liruilong.hros.model.datas.DataModels">
+        select j.`name` as name, COUNT(*) as sum, round(AVG(TIMESTAMPDIFF(YEAR, e.birthday, CURDATE()))) as workage
+        from employee_recycle e,
+             joblevel j
+        where e.`jobLevelId` = j.`id`
+        GROUP BY name
+    </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from employee_recycle
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.liruilong.hros.model.EmployeeRecycle" >
-    insert into employee_recycle (id, name, gender, 
-      birthday, idCard, wedlock, nationId, 
-      nativePlace, politicId, email, 
-      phone, address, departmentId, 
-      jobLevelId, posId, engageForm, 
-      tiptopDegree, specialty, school, 
-      beginDate, workState, workID, 
-      contractTerm, conversionTime, notWorkDate, 
-      beginContract, endContract, workAge
-      )
+    <insert id="insert" parameterType="com.liruilong.hros.model.EmployeeRecycle">
+        insert into employee_recycle (id, name, gender,
+                                      birthday, idCard, wedlock, nationId,
+                                      nativePlace, politicId, email,
+                                      phone, address, departmentId,
+                                      jobLevelId, posId, engageForm,
+                                      tiptopDegree, specialty, school,
+                                      beginDate, workState, workID,
+                                      contractTerm, conversionTime, notWorkDate,
+                                      beginContract, endContract, workAge)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{gender,jdbcType=CHAR}, 
       #{birthday,jdbcType=DATE}, #{idcard,jdbcType=CHAR}, #{wedlock,jdbcType=CHAR}, #{nationid,jdbcType=INTEGER}, 
       #{nativeplace,jdbcType=VARCHAR}, #{politicid,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, 
@@ -84,17 +89,17 @@
       #{begincontract,jdbcType=DATE}, #{endcontract,jdbcType=DATE}, #{workage,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.liruilong.hros.model.Employee" >
-    insert into employee_recycle
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="name != null" >
-        name,
-      </if>
-      <if test="gender != null" >
-        gender,
+    <insert id="insertSelective" parameterType="com.liruilong.hros.model.Employee">
+        insert into employee_recycle
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="gender != null">
+                gender,
       </if>
       <if test="birthday != null" >
         birthday,
@@ -259,17 +264,17 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.liruilong.hros.model.EmployeeRecycle" >
-    update employee_recycle
-    <set >
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="gender != null" >
-        gender = #{gender,jdbcType=CHAR},
-      </if>
-      <if test="birthday != null" >
-        birthday = #{birthday,jdbcType=DATE},
+    <update id="updateByPrimaryKeySelective" parameterType="com.liruilong.hros.model.EmployeeRecycle">
+        update employee_recycle
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                gender = #{gender,jdbcType=CHAR},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday,jdbcType=DATE},
       </if>
       <if test="idcard != null" >
         idCard = #{idcard,jdbcType=CHAR},
@@ -346,17 +351,17 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.liruilong.hros.model.EmployeeRecycle" >
-    update employee_recycle
-    set name = #{name,jdbcType=VARCHAR},
-      gender = #{gender,jdbcType=CHAR},
-      birthday = #{birthday,jdbcType=DATE},
-      idCard = #{idcard,jdbcType=CHAR},
-      wedlock = #{wedlock,jdbcType=CHAR},
-      nationId = #{nationid,jdbcType=INTEGER},
-      nativePlace = #{nativeplace,jdbcType=VARCHAR},
-      politicId = #{politicid,jdbcType=INTEGER},
-      email = #{email,jdbcType=VARCHAR},
+    <update id="updateByPrimaryKey" parameterType="com.liruilong.hros.model.EmployeeRecycle">
+        update employee_recycle
+        set name        = #{name,jdbcType=VARCHAR},
+            gender      = #{gender,jdbcType=CHAR},
+            birthday    = #{birthday,jdbcType=DATE},
+            idCard      = #{idcard,jdbcType=CHAR},
+            wedlock     = #{wedlock,jdbcType=CHAR},
+            nationId    = #{nationid,jdbcType=INTEGER},
+            nativePlace = #{nativeplace,jdbcType=VARCHAR},
+            politicId   = #{politicid,jdbcType=INTEGER},
+            email       = #{email,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
       departmentId = #{departmentid,jdbcType=INTEGER},

@@ -6,8 +6,8 @@
         <result column="name" property="name" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, name
-  </sql>
+        id, name
+    </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
@@ -24,9 +24,9 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
     <insert id="insert" parameterType="com.liruilong.hros.model.Nation">
-    insert into nation (id, name)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR})
-  </insert>
+        insert into nation (id, name)
+        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR})
+    </insert>
     <insert id="insertSelective" parameterType="com.liruilong.hros.model.Nation">
         insert into nation
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -56,8 +56,8 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.liruilong.hros.model.Nation">
-    update nation
-    set name = #{name,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+        update nation
+        set name = #{name,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>

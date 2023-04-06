@@ -9,6 +9,9 @@ import java.util.List;
 public interface EmployeeecMapper {
     int deleteByPrimaryKey(Integer id);
 
+    int deleteByEmpId(Integer eid);
+
+
     int insert(Employeeec record);
 
     int insertSelective(Employeeec record);

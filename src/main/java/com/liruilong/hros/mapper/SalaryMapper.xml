@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.liruilong.hros.mapper.SalaryMapper" >
-  <resultMap id="BaseResultMap" type="com.liruilong.hros.model.Salary" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="basicSalary" property="basicsalary" jdbcType="INTEGER" />
-    <result column="bonus" property="bonus" jdbcType="INTEGER" />
-    <result column="lunchSalary" property="lunchsalary" jdbcType="INTEGER" />
-    <result column="trafficSalary" property="trafficsalary" jdbcType="INTEGER" />
-    <result column="allSalary" property="allsalary" jdbcType="INTEGER" />
-    <result column="pensionBase" property="pensionbase" jdbcType="INTEGER" />
-    <result column="pensionPer" property="pensionper" jdbcType="REAL" />
-    <result column="createDate" property="createdate" jdbcType="TIMESTAMP" />
-    <result column="medicalBase" property="medicalbase" jdbcType="INTEGER" />
+<mapper namespace="com.liruilong.hros.mapper.SalaryMapper">
+    <resultMap id="BaseResultMap" type="com.liruilong.hros.model.Salary">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="basicSalary" property="basicsalary" jdbcType="INTEGER"/>
+        <result column="bonus" property="bonus" jdbcType="INTEGER"/>
+        <result column="lunchSalary" property="lunchsalary" jdbcType="INTEGER"/>
+        <result column="trafficSalary" property="trafficsalary" jdbcType="INTEGER"/>
+        <result column="allSalary" property="allsalary" jdbcType="INTEGER"/>
+        <result column="pensionBase" property="pensionbase" jdbcType="INTEGER"/>
+        <result column="pensionPer" property="pensionper" jdbcType="REAL"/>
+        <result column="createDate" property="createdate" jdbcType="TIMESTAMP"/>
+        <result column="medicalBase" property="medicalbase" jdbcType="INTEGER"/>
     <result column="medicalPer" property="medicalper" jdbcType="REAL" />
     <result column="accumulationFundBase" property="accumulationfundbase" jdbcType="INTEGER" />
     <result column="accumulationFundPer" property="accumulationfundper" jdbcType="REAL" />
@@ -36,29 +36,29 @@
     delete from salary
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.liruilong.hros.model.Salary" >
-    insert into salary (id, basicSalary, bonus, 
-      lunchSalary, trafficSalary, allSalary, 
-      pensionBase, pensionPer, createDate, 
-      medicalBase, medicalPer, accumulationFundBase, 
-      accumulationFundPer, name)
-    values (#{id,jdbcType=INTEGER}, #{basicsalary,jdbcType=INTEGER}, #{bonus,jdbcType=INTEGER}, 
-      #{lunchsalary,jdbcType=INTEGER}, #{trafficsalary,jdbcType=INTEGER}, #{allsalary,jdbcType=INTEGER}, 
-      #{pensionbase,jdbcType=INTEGER}, #{pensionper,jdbcType=REAL}, #{createdate,jdbcType=TIMESTAMP}, 
-      #{medicalbase,jdbcType=INTEGER}, #{medicalper,jdbcType=REAL}, #{accumulationfundbase,jdbcType=INTEGER}, 
-      #{accumulationfundper,jdbcType=REAL}, #{name,jdbcType=VARCHAR})
+    <insert id="insert" parameterType="com.liruilong.hros.model.Salary">
+        insert into salary (id, basicSalary, bonus,
+                            lunchSalary, trafficSalary, allSalary,
+                            pensionBase, pensionPer, createDate,
+                            medicalBase, medicalPer, accumulationFundBase,
+                            accumulationFundPer, name)
+        values (#{id,jdbcType=INTEGER}, #{basicsalary,jdbcType=INTEGER}, #{bonus,jdbcType=INTEGER},
+                #{lunchsalary,jdbcType=INTEGER}, #{trafficsalary,jdbcType=INTEGER}, #{allsalary,jdbcType=INTEGER},
+                #{pensionbase,jdbcType=INTEGER}, #{pensionper,jdbcType=REAL}, #{createdate,jdbcType=TIMESTAMP},
+                #{medicalbase,jdbcType=INTEGER}, #{medicalper,jdbcType=REAL}, #{accumulationfundbase,jdbcType=INTEGER},
+                #{accumulationfundper,jdbcType=REAL}, #{name,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.liruilong.hros.model.Salary" >
-    insert into salary
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="basicsalary != null" >
-        basicSalary,
-      </if>
-      <if test="bonus != null" >
-        bonus,
+    <insert id="insertSelective" parameterType="com.liruilong.hros.model.Salary">
+        insert into salary
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="basicsalary != null">
+                basicSalary,
+            </if>
+            <if test="bonus != null">
+                bonus,
       </if>
       <if test="lunchsalary != null" >
         lunchSalary,
@@ -139,17 +139,17 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.liruilong.hros.model.Salary" >
-    update salary
-    <set >
-      <if test="basicsalary != null" >
-        basicSalary = #{basicsalary,jdbcType=INTEGER},
-      </if>
-      <if test="bonus != null" >
-        bonus = #{bonus,jdbcType=INTEGER},
-      </if>
-      <if test="lunchsalary != null" >
-        lunchSalary = #{lunchsalary,jdbcType=INTEGER},
+    <update id="updateByPrimaryKeySelective" parameterType="com.liruilong.hros.model.Salary">
+        update salary
+        <set>
+            <if test="basicsalary != null">
+                basicSalary = #{basicsalary,jdbcType=INTEGER},
+            </if>
+            <if test="bonus != null">
+                bonus = #{bonus,jdbcType=INTEGER},
+            </if>
+            <if test="lunchsalary != null">
+                lunchSalary = #{lunchsalary,jdbcType=INTEGER},
       </if>
       <if test="trafficsalary != null" >
         trafficSalary = #{trafficsalary,jdbcType=INTEGER},
@@ -184,17 +184,17 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.liruilong.hros.model.Salary" >
-    update salary
-    set basicSalary = #{basicsalary,jdbcType=INTEGER},
-      bonus = #{bonus,jdbcType=INTEGER},
-      lunchSalary = #{lunchsalary,jdbcType=INTEGER},
-      trafficSalary = #{trafficsalary,jdbcType=INTEGER},
-      allSalary = #{allsalary,jdbcType=INTEGER},
-      pensionBase = #{pensionbase,jdbcType=INTEGER},
-      pensionPer = #{pensionper,jdbcType=REAL},
-      createDate = #{createdate,jdbcType=TIMESTAMP},
-      medicalBase = #{medicalbase,jdbcType=INTEGER},
+    <update id="updateByPrimaryKey" parameterType="com.liruilong.hros.model.Salary">
+        update salary
+        set basicSalary    = #{basicsalary,jdbcType=INTEGER},
+            bonus          = #{bonus,jdbcType=INTEGER},
+            lunchSalary    = #{lunchsalary,jdbcType=INTEGER},
+            trafficSalary  = #{trafficsalary,jdbcType=INTEGER},
+            allSalary      = #{allsalary,jdbcType=INTEGER},
+            pensionBase    = #{pensionbase,jdbcType=INTEGER},
+            pensionPer     = #{pensionper,jdbcType=REAL},
+            createDate     = #{createdate,jdbcType=TIMESTAMP},
+            medicalBase    = #{medicalbase,jdbcType=INTEGER},
       medicalPer = #{medicalper,jdbcType=REAL},
       accumulationFundBase = #{accumulationfundbase,jdbcType=INTEGER},
       accumulationFundPer = #{accumulationfundper,jdbcType=REAL},

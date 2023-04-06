@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.liruilong.hros.mapper.AdjustSalaryMapper" >
-  <resultMap id="BaseResultMap" type="com.liruilong.hros.model.AdjustSalary" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="eid" property="eid" jdbcType="INTEGER" />
-    <result column="asDate" property="asdate" jdbcType="DATE" />
-    <result column="beforeSalary" property="beforesalary" jdbcType="INTEGER" />
-    <result column="afterSalary" property="aftersalary" jdbcType="INTEGER" />
-    <result column="reason" property="reason" jdbcType="VARCHAR" />
-    <result column="remark" property="remark" jdbcType="VARCHAR" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    id, eid, asDate, beforeSalary, afterSalary, reason, remark
+<mapper namespace="com.liruilong.hros.mapper.AdjustSalaryMapper">
+    <resultMap id="BaseResultMap" type="com.liruilong.hros.model.AdjustSalary">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="eid" property="eid" jdbcType="INTEGER"/>
+        <result column="asDate" property="asdate" jdbcType="DATE"/>
+        <result column="beforeSalary" property="beforesalary" jdbcType="INTEGER"/>
+        <result column="afterSalary" property="aftersalary" jdbcType="INTEGER"/>
+        <result column="reason" property="reason" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, eid, asDate, beforeSalary, afterSalary, reason, remark
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -23,25 +23,25 @@
     delete from adjustsalary
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.liruilong.hros.model.AdjustSalary" >
-    insert into adjustsalary (id, eid, asDate, 
-      beforeSalary, afterSalary, reason, 
-      remark)
-    values (#{id,jdbcType=INTEGER}, #{eid,jdbcType=INTEGER}, #{asdate,jdbcType=DATE}, 
-      #{beforesalary,jdbcType=INTEGER}, #{aftersalary,jdbcType=INTEGER}, #{reason,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.liruilong.hros.model.AdjustSalary" >
-    insert into adjustsalary
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="eid != null" >
-        eid,
-      </if>
-      <if test="asdate != null" >
-        asDate,
+    <insert id="insert" parameterType="com.liruilong.hros.model.AdjustSalary">
+        insert into adjustsalary (id, eid, asDate,
+                                  beforeSalary, afterSalary, reason,
+                                  remark)
+        values (#{id,jdbcType=INTEGER}, #{eid,jdbcType=INTEGER}, #{asdate,jdbcType=DATE},
+                #{beforesalary,jdbcType=INTEGER}, #{aftersalary,jdbcType=INTEGER}, #{reason,jdbcType=VARCHAR},
+                #{remark,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.liruilong.hros.model.AdjustSalary">
+        insert into adjustsalary
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="eid != null">
+                eid,
+            </if>
+            <if test="asdate != null">
+                asDate,
       </if>
       <if test="beforesalary != null" >
         beforeSalary,
@@ -80,17 +80,17 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.liruilong.hros.model.AdjustSalary" >
-    update adjustsalary
-    <set >
-      <if test="eid != null" >
-        eid = #{eid,jdbcType=INTEGER},
-      </if>
-      <if test="asdate != null" >
-        asDate = #{asdate,jdbcType=DATE},
-      </if>
-      <if test="beforesalary != null" >
-        beforeSalary = #{beforesalary,jdbcType=INTEGER},
+    <update id="updateByPrimaryKeySelective" parameterType="com.liruilong.hros.model.AdjustSalary">
+        update adjustsalary
+        <set>
+            <if test="eid != null">
+                eid = #{eid,jdbcType=INTEGER},
+            </if>
+            <if test="asdate != null">
+                asDate = #{asdate,jdbcType=DATE},
+            </if>
+            <if test="beforesalary != null">
+                beforeSalary = #{beforesalary,jdbcType=INTEGER},
       </if>
       <if test="aftersalary != null" >
         afterSalary = #{aftersalary,jdbcType=INTEGER},
@@ -104,14 +104,14 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.liruilong.hros.model.AdjustSalary" >
-    update adjustsalary
-    set eid = #{eid,jdbcType=INTEGER},
-      asDate = #{asdate,jdbcType=DATE},
-      beforeSalary = #{beforesalary,jdbcType=INTEGER},
-      afterSalary = #{aftersalary,jdbcType=INTEGER},
-      reason = #{reason,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+    <update id="updateByPrimaryKey" parameterType="com.liruilong.hros.model.AdjustSalary">
+        update adjustsalary
+        set eid          = #{eid,jdbcType=INTEGER},
+            asDate       = #{asdate,jdbcType=DATE},
+            beforeSalary = #{beforesalary,jdbcType=INTEGER},
+            afterSalary  = #{aftersalary,jdbcType=INTEGER},
+            reason       = #{reason,jdbcType=VARCHAR},
+            remark       = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>

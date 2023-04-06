@@ -5,6 +5,9 @@ import com.liruilong.hros.model.Employeeremove;
 public interface EmployeeremoveMapper {
     int deleteByPrimaryKey(Integer id);
 
+    int deleteByEmpId(Integer eid);
+
+
     int insert(Employeeremove record);
 
     int insertSelective(Employeeremove record);

@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * @Description : 职称
- * @Author: Liruilong
+
  * @Date: 2019/12/26 13:14
  */
 @RestController
@@ -26,9 +26,15 @@ public class JobLevelController {
     public List<JobLevel> getAllJobLevels() {
         return jobLevelService.getAllJobLevels();
     }
+
+    @GetMapping("/all")
+    public List<JobLevel> getRealAllJobLevels() {
+        return jobLevelService.getRealAllJobLevels();
+    }
+
     @PostMapping("/serch/")
-    public List<Position> serchJobLevel(@RequestBody JobLevel jobLevel){
-        return  jobLevelService.serchJobLevel(jobLevel);
+    public List<Position> serchJobLevel(@RequestBody JobLevel jobLevel) {
+        return jobLevelService.serchJobLevel(jobLevel);
 
     }
 

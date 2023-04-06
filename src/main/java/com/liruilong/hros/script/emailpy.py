@@ -3,7 +3,7 @@ import sys
 from email.mime.text import MIMEText
 from email.header import Header
 
-from_addr = 'liruilong108@foxmail.com'
+from_addr = 'xuezixiang108@foxmail.com'
 password = 'xznjnyvgnvmuicji'
 
 to_addr = sys.argv[1]

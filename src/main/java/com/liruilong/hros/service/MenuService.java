@@ -2,23 +2,19 @@ package com.liruilong.hros.service;
 
 import com.liruilong.hros.mapper.MenuMapper;
 import com.liruilong.hros.mapper.MenuRoleMapper;
-import com.liruilong.hros.model.Hr;
 import com.liruilong.hros.model.Menu;
 import com.liruilong.hros.model.OpLog;
 import com.liruilong.hros.service.utils.Hruitls;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.Max;
 import java.util.Date;
 import java.util.List;
 
 /**
  * @Description : 菜单处理
- * @Author: Liruilong
+
  * @Date: 2019/12/21 13:17
  */
 @Transactional
@@ -34,8 +30,8 @@ public class MenuService {
     OplogService oplogService;
 
     /**
-     * @return java.util.List<com.liruilong.hros.model.Menu>
-     * @Author Liruilong
+     * @return java.util.List<Menu>
+     * @Author liruilong
      * @Description 根据角色id获取权限菜单
      * @Date 22:20 2019/12/22
      * @Param []
@@ -45,8 +41,8 @@ public class MenuService {
     }
 
     /**
-     * @return java.util.List<com.liruilong.hros.model.Menu>
-     * @Author Liruilong
+     * @return java.util.List<Menu>
+     * @Author liruilong
      * @Description 获取所有权限菜单, springSecurity鑒權處理
      * @Date 17:48 2019/12/24
      * @Param []
@@ -57,8 +53,8 @@ public class MenuService {
     }
 
     /**
-     * @return java.util.List<com.liruilong.hros.model.Menu>
-     * @Author Liruilong
+     * @return java.util.List<Menu>
+     * @Author liruilong
      * @Description 菜单数据初始化，系統設置裏的系統菜單處理。
      * @Date 21:13 2019/12/26
      * @Param []
@@ -70,7 +66,7 @@ public class MenuService {
 
     /**
      * @return java.util.List<java.lang.Integer>
-     * @Author Liruilong
+     * @Author liruilong
      * @Description 获取当前角色权限
      * @Date 20:42 2019/12/26
      * @Param [rid]
@@ -83,7 +79,7 @@ public class MenuService {
 
     /**
      * @return boolean
-     * @Author Liruilong
+     * @Author liruilong
      * @Description 更新信息
      * @Date 21:12 2019/12/26
      * @Param [rid, mids]

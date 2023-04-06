@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * @Description : 奖惩处理
- * @Author: Liruilong
+
  * @Date: 2020/1/8 20:25
  */
 @RestController
@@ -34,20 +34,22 @@ public class EmployeeecController {
 
 
     @GetMapping("/")
-    public RespBean addEmployeeec(Employeeec employeeec, Integer[] ids){
+    public RespBean addEmployeeec(Employeeec employeeec, Integer[] ids) {
 
-        if (employeeecService.addEmployeeec(employeeec, ids) == ids.length){
+        if (employeeecService.addEmployeeec(employeeec, ids) == ids.length) {
             return RespBean.ok("添加成功");
-        }else {
+        } else {
             return RespBean.error("添加失败");
         }
 
     }
+
     @GetMapping("/init")
-    public RespPageBean getEmploteeByPge(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size,Employee employee, Date[] beginDateScope) {
+    public RespPageBean getEmploteeByPge(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size, Employee employee, Date[] beginDateScope) {
         return employeeService.getEmploteeByPge(page, size, employee, beginDateScope);
 
     }
+
     @GetMapping("/rp")
     public List<RwardsPunishments> getAllRwardsPunishments() {
         return rwardsPunishmentsSevice.getAllRwardsPunishments();

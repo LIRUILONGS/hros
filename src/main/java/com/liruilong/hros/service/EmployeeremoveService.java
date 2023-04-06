@@ -1,6 +1,5 @@
 package com.liruilong.hros.service;
 
-import com.liruilong.hros.mapper.EmployeeRecycleMapper;
 import com.liruilong.hros.mapper.EmployeeremoveMapper;
 import com.liruilong.hros.model.Employeeremove;
 import com.liruilong.hros.service.utils.LogUtils;
@@ -10,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @Description :
- * @Author: Liruilong
+
  * @Date: 2020/1/14 16:40
  */
 @Service

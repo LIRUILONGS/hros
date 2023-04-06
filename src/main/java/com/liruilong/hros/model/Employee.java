@@ -45,11 +45,21 @@ public class Employee  implements Serializable {
     private Nation nation;
     private Politicsstatus politicsstatus;
     private Position position;
+
+    private Hr hr;
     private Department department;
     private JobLevel jobLevel;
     private List<Employeeec> employeeecList;
     private Appraise appraise;
     private List<Employeeremove> employeeremoveList;
+
+    public Hr getHr() {
+        return hr;
+    }
+
+    public void setHr(Hr hr) {
+        this.hr = hr;
+    }
 
     public List<Employeeremove> getEmployeeremoveList() {
         return employeeremoveList;

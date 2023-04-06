@@ -5,7 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * @Description :
- * @Author: Liruilong
+
  * @Date: 2019/12/29 20:21
  */
 public class Hruitls {

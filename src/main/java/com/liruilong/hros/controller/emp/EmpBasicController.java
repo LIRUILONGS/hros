@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * @Description :
- * @Author: Liruilong
+
  * @Date: 2019/12/31 11:19
  */
 
@@ -38,7 +38,7 @@ public class EmpBasicController {
     EmployeeecService employeeecService;
 
     @GetMapping("/")
-    public RespPageBean getEmploteeByPge(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size,Employee employee, Date[] beginDateScope) {
+    public RespPageBean getEmploteeByPge(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size, Employee employee, Date[] beginDateScope) {
         return employeeService.getEmploteeByPge(page, size, employee, beginDateScope);
 
     }
@@ -105,18 +105,22 @@ public class EmpBasicController {
 
     @GetMapping("/maxWorkID")
     public RespBean maxWorkID() {
+        Integer workID = employeeService.maxWorkID();
+        if (workID == null) {
+            workID = 0;
+        }
         RespBean respBean = RespBean.build().setStatus(200)
-                .setObj(String.format("%08d", employeeService.maxWorkID() + 1));
+                .setObj(String.format("%08d", workID + 1));
         return respBean;
     }
 
-/**
- * @Author Liruilong
- * @Description  文件下载
- * @Date 19:04 2020/1/1
- * @Param []
- * @return org.springframework.http.ResponseEntity<byte[]>
- **/
+    /**
+     * @return org.springframework.http.ResponseEntity<byte [ ]>
+     * @Author liruilong
+     * @Description 文件下载
+     * @Date 19:04 2020/1/1
+     * @Param []
+     **/
 
     @GetMapping("/export")
     public ResponseEntity<byte[]> exportData() {
@@ -126,11 +130,11 @@ public class EmpBasicController {
 
 
     /**
-     * @Author Liruilong
+     * @Author liruilong
      * @Description 文件导出
      * @Date 19:48 2020/1/1
      * @Param [file]
-     * @return com.liruilong.hros.model.RespBean
+     * @return RespBean
      **/
 
     @PostMapping("/import")

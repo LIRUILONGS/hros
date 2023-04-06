@@ -3,7 +3,6 @@ package com.liruilong.hros.service;
 import com.liruilong.hros.mapper.EmployeeecMapper;
 import com.liruilong.hros.model.Employeeec;
 import com.liruilong.hros.service.utils.LogUtils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +11,7 @@ import java.util.Date;
 
 /**
  * @Description :
- * @Author: Liruilong
+
  * @Date: 2020/1/8 20:26
  */
 @Service

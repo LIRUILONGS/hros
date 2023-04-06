@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * @Description : 分页
- * @Author: Liruilong
+
  * @Date: 2019/12/31 11:20
  */
 public class RespPageBean {

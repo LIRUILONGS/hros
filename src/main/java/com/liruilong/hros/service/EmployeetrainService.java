@@ -1,12 +1,8 @@
 package com.liruilong.hros.service;
 
 import com.liruilong.hros.mapper.EmployeetrainMapper;
-
-import com.liruilong.hros.model.Appraise;
 import com.liruilong.hros.model.Employeetrain;
-
 import com.liruilong.hros.service.utils.LogUtils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @Description :
- * @Author: Liruilong
+
  * @Date: 2020/1/12 12:29
  */
 @Transactional

@@ -1,7 +1,6 @@
 package com.liruilong.hros.controller.system;
 
 import com.liruilong.hros.model.LogType;
-import com.liruilong.hros.model.OpLog;
 import com.liruilong.hros.model.RespPageBean;
 import com.liruilong.hros.service.LogTypeService;
 import com.liruilong.hros.service.OplogService;
@@ -16,7 +15,7 @@ import java.util.List;
 
 /**
  * @Description :
- * @Author: Liruilong
+
  * @Date: 2020/1/5 22:06
  */
 @RestController
