@@ -3,7 +3,6 @@ package com.liruilong.hros.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liruilong.hros.Exception.ValidateCodeException;
 import com.liruilong.hros.model.RespBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -46,9 +45,5 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
         out.write(new ObjectMapper().writeValueAsString(respBean));
         out.flush();
         out.close();
-    }
-    @Bean
-    public  MyAuthenticationFailureHandler getMyAuthenticationFailureHandler(){
-        return new MyAuthenticationFailureHandler();
     }
 }
