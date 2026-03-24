@@ -2,11 +2,11 @@
 package com.liruilong.hros.Exception;
 
 import com.liruilong.hros.model.RespBean;
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.logging.Logger;
 
 /**
@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
     Logger logger = Logger.getLogger("GlobalExceptionHandler");
     @ExceptionHandler(SQLException.class)
     public RespBean sqlException(SQLException e) {
-        if (e instanceof MySQLIntegrityConstraintViolationException) {
+        if (e instanceof SQLIntegrityConstraintViolationException) {
             return RespBean.error("该数据有关联数据,操作异常!");
         }
         return RespBean.error("数据库异常,操作失败");
