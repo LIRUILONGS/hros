@@ -5,7 +5,6 @@ import com.liruilong.hros.Exception.ValidateCodeException;
 import com.liruilong.hros.config.MyAuthenticationFailureHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
@@ -26,10 +25,6 @@ import java.io.IOException;
 @Component
 public class VerifyCodeFilter extends OncePerRequestFilter {
 
-    @Bean
-    public VerifyCodeFilter getVerifyCodeFilter() {
-        return new VerifyCodeFilter();
-    }
     @Autowired
     MyAuthenticationFailureHandler myAuthenticationFailureHandler;
     @Override
@@ -56,12 +51,10 @@ public class VerifyCodeFilter extends OncePerRequestFilter {
             } catch (AuthenticationException e) {
                 // 2. 捕获步骤1中校验出现异常，交给失败处理类进行进行处理
                 myAuthenticationFailureHandler.onAuthenticationFailure(request, response, e);
-            } finally {
-                filterChain.doFilter(request, response);
+                return;
             }
-        } else {
-                filterChain.doFilter(request, response);
         }
+        filterChain.doFilter(request, response);
 
 
     }
