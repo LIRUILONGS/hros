@@ -48,12 +48,11 @@ public class VerifyCodeFilter extends OncePerRequestFilter {
                 if (!StringUtils.equals(code, requestCaptcha)) {
                     throw new ValidateCodeException("验证码不匹配");
                 }
-                filterChain.doFilter(request, response);
             } catch (AuthenticationException e) {
                 myAuthenticationFailureHandler.onAuthenticationFailure(request, response, e);
+                return;
             }
-        } else {
-            filterChain.doFilter(request, response);
         }
+        filterChain.doFilter(request, response);
     }
 }
